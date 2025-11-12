@@ -1,3 +1,125 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+**Proyecta** is a revenue projection system POC ("Sistema de Proyección de Ingresos") built with Laravel 12, React 19, Inertia.js v2, and TypeScript. The application has complete authentication infrastructure (including 2FA), user management, and a comprehensive UI component library. The business logic (revenue models, projection calculations, dashboard) is not yet implemented.
+
+## Development Commands
+
+### Setup
+```bash
+composer setup              # Full setup: install deps, generate key, migrate, build
+```
+
+### Development
+```bash
+composer run dev            # Start server + queue + Vite (recommended)
+composer run dev:ssr        # Development with SSR enabled
+npm run dev                 # Vite dev server only
+```
+
+### Testing
+```bash
+composer test                                  # Run all Pest tests
+php artisan test tests/Feature/ExampleTest.php # Run specific file
+php artisan test --filter=testName             # Run specific test
+```
+
+### Code Quality
+```bash
+vendor/bin/pint --dirty     # Format PHP (run before commits)
+npm run lint                # ESLint with auto-fix
+npm run format              # Prettier formatting (run before commits)
+npm run types               # TypeScript type checking
+```
+
+### Build & Database
+```bash
+npm run build               # Production build
+npm run build:ssr           # Build with SSR support
+php artisan migrate         # Run migrations
+php artisan tinker          # PHP REPL
+```
+
+## Architecture
+
+### Laravel 12 Structure
+- **No `app/Console/Kernel.php`** or **`app/Http/Kernel.php`** - Use `bootstrap/app.php`
+- **Commands auto-register** - Files in `app/Console/Commands/` are automatically available
+- **`bootstrap/app.php`** - Central configuration for middleware, routing, exceptions
+- **Model casts** - Use `casts()` method, not `$casts` property
+
+### Key Features
+- **Authentication:** Laravel Fortify with 2FA (password + OTP confirmation required)
+- **Inertia v2:** SSR-enabled, pages in `resources/js/pages/`, shared data via `HandleInertiaRequests`
+- **Wayfinder:** Type-safe routes, auto-generates in `resources/js/actions/`, use `.form()` for Inertia forms
+- **Tailwind 4:** CSS-first config via `@theme` directive, OKLCH colors, dark mode via `.dark` class
+- **UI Components:** 20+ Radix UI components in `resources/js/components/ui/`
+
+### Routes Organization
+- `routes/web.php` - Main application routes
+- `routes/settings.php` - User settings (profile, password, 2FA, appearance)
+- All routes use **named routes** for Wayfinder
+
+### Database
+- **Dev:** SQLite (`database/database.sqlite`)
+- **Prod:** MySQL/SQL Server
+- **Current schema:** `users` (with 2FA), `cache`, `jobs`, `sessions` only
+- **Business tables:** Not yet implemented (Revenue, Projection pending)
+
+## Development Patterns
+
+### Creating Features
+
+**Backend:**
+```bash
+php artisan make:model Post -mfs --no-interaction  # Model + migration + factory + seeder
+php artisan make:request StorePostRequest --no-interaction
+php artisan make:controller PostController --no-interaction
+# Add named routes in routes/web.php
+vendor/bin/pint --dirty
+```
+
+**Frontend:**
+```typescript
+// resources/js/pages/posts/index.tsx
+import { store, update } from '@/actions/App/Http/Controllers/PostController'
+
+<Form {...store.form()}>
+  <input name="title" />
+</Form>
+```
+
+**Testing:**
+```bash
+php artisan make:test PostTest --no-interaction
+php artisan test --filter=Post
+```
+
+### Key Conventions
+- **Never hardcode URLs** - Use Wayfinder functions
+- **Forms** - Prefer `<Form>` component with `.form()`
+- **Spacing** - Use `gap` utilities, not margins
+- **Validation** - Create Form Request classes (not inline)
+- **Config** - Use `config('app.name')`, never `env('APP_NAME')`
+- **Navigation** - Use `<Link>` or `router.visit()` from Inertia
+- **Dark mode** - All components must support `dark:` prefix
+
+## Troubleshooting
+- **Vite manifest error:** Run `npm run build` or ask user to run `npm run dev`
+- **Frontend changes not visible:** User needs `npm run dev` or `composer run dev`
+- **Routes not found:** `php artisan route:clear`
+
+## Project Status
+
+**Completed:** Authentication with 2FA, user settings, theme system, UI components, type-safe routing, SSR setup, testing framework
+
+**Pending (from Roadmap):** Revenue models, projection calculations, dashboard visualization, API endpoints, reports/exports, roles/permissions
+
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
