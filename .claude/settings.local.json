@@ -1,11 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(npm run format:*)",
+      "Bash(php artisan:*)"
+    ]
+  },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "laravel-boost"
-  ],
-  "permissions": {
-    "allow": [
-      "Bash(npm run format:*)"
-    ]
-  }
+  ]
 }
