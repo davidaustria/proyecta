@@ -40,6 +40,18 @@ class Scenario extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::deleted(function (Scenario $scenario) {
+            if ($scenario->isForceDeleting()) {
+                return;
+            }
+
+            $scenario->assumptions()->delete();
+            $scenario->projections()->each(fn ($projection) => $projection->forceDelete());
+        });
+    }
+
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);

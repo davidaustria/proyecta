@@ -45,6 +45,17 @@ class Projection extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::deleted(function (Projection $projection) {
+            if ($projection->isForceDeleting()) {
+                return;
+            }
+
+            $projection->details()->delete();
+        });
+    }
+
     public function scenario(): BelongsTo
     {
         return $this->belongsTo(Scenario::class);
