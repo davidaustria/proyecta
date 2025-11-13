@@ -20,12 +20,52 @@ Este documento describe la arquitectura de base de datos para el sistema de proy
 
 ## 1. Modelos de Datos Históricos
 
+### `Organization` (Organizaciones - Multi-tenancy)
+
+Entidad raíz para soporte multi-tenancy. Cada organización tiene sus propios clientes, productos, escenarios y proyecciones aislados.
+
+**Campos:**
+
+- `id` - bigint, PK
+- `name` - string(255)
+- `slug` - string(100), unique
+- `domain` - string(255), nullable, unique (para identificación por dominio)
+- `is_active` - boolean, default true
+- `settings` - json, nullable (configuración específica de la organización)
+- `created_at` - timestamp
+- `updated_at` - timestamp
+- `deleted_at` - timestamp, nullable
+
+**Índices:**
+
+- PRIMARY KEY (`id`)
+- UNIQUE KEY (`slug`)
+- UNIQUE KEY (`domain`)
+- INDEX (`is_active`)
+
+**Relaciones:**
+
+- `hasMany(BusinessGroup)`
+- `hasMany(CustomerType)`
+- `hasMany(Customer)`
+- `hasMany(Product)`
+- `hasMany(Scenario)`
+
+**Notas:**
+
+- Todos los modelos principales deben incluir un Global Scope que filtre por `organization_id`
+- Los usuarios pueden pertenecer a múltiples organizaciones (relación many-to-many)
+
+---
+
 ### `BusinessGroup` (Grupos Empresariales)
 
 Agrupa múltiples clientes bajo una misma entidad empresarial.
 
 **Campos:**
+
 - `id` - bigint, PK
+- `organization_id` - bigint, FK
 - `name` - string(255)
 - `code` - string(50), unique
 - `description` - text, nullable
@@ -36,8 +76,10 @@ Agrupa múltiples clientes bajo una misma entidad empresarial.
 - `deleted_at` - timestamp, nullable
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
-- UNIQUE KEY (`code`)
+- INDEX (`organization_id`)
+- UNIQUE KEY (`organization_id`, `code`)
 - INDEX (`is_active`)
 
 ---
@@ -47,7 +89,9 @@ Agrupa múltiples clientes bajo una misma entidad empresarial.
 Define categorías de clientes (Fondos, Afores, Otros).
 
 **Campos:**
+
 - `id` - bigint, PK
+- `organization_id` - bigint, FK
 - `name` - string(255)
 - `code` - string(50), unique
 - `description` - text, nullable
@@ -58,8 +102,10 @@ Define categorías de clientes (Fondos, Afores, Otros).
 - `deleted_at` - timestamp, nullable
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
-- UNIQUE KEY (`code`)
+- INDEX (`organization_id`)
+- UNIQUE KEY (`organization_id`, `code`)
 - INDEX (`is_active`, `sort_order`)
 
 ---
@@ -69,7 +115,9 @@ Define categorías de clientes (Fondos, Afores, Otros).
 Clientes individuales asociados a grupos empresariales y tipos.
 
 **Campos:**
+
 - `id` - bigint, PK
+- `organization_id` - bigint, FK
 - `business_group_id` - bigint, FK, nullable
 - `customer_type_id` - bigint, FK
 - `name` - string(255)
@@ -82,13 +130,16 @@ Clientes individuales asociados a grupos empresariales y tipos.
 - `deleted_at` - timestamp, nullable
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
-- UNIQUE KEY (`code`)
+- INDEX (`organization_id`)
+- UNIQUE KEY (`organization_id`, `code`)
 - INDEX (`business_group_id`)
 - INDEX (`customer_type_id`)
 - INDEX (`is_active`)
 
 **Relaciones:**
+
 - `belongsTo(BusinessGroup)`
 - `belongsTo(CustomerType)`
 - `hasMany(Invoice)`
@@ -100,7 +151,9 @@ Clientes individuales asociados a grupos empresariales y tipos.
 Productos o servicios facturados.
 
 **Campos:**
+
 - `id` - bigint, PK
+- `organization_id` - bigint, FK
 - `name` - string(255)
 - `code` - string(50), unique
 - `description` - text, nullable
@@ -112,12 +165,15 @@ Productos o servicios facturados.
 - `deleted_at` - timestamp, nullable
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
-- UNIQUE KEY (`code`)
+- INDEX (`organization_id`)
+- UNIQUE KEY (`organization_id`, `code`)
 - INDEX (`category`)
 - INDEX (`is_active`)
 
 **Relaciones:**
+
 - `hasMany(InvoiceItem)`
 
 ---
@@ -127,6 +183,7 @@ Productos o servicios facturados.
 Facturas importadas de sistemas externos.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `import_batch_id` - bigint, FK, nullable
 - `customer_id` - bigint, FK
@@ -146,6 +203,7 @@ Facturas importadas de sistemas externos.
 - `updated_at` - timestamp
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - UNIQUE KEY (`invoice_number`)
 - INDEX (`customer_id`, `invoice_date`)
@@ -154,6 +212,7 @@ Facturas importadas de sistemas externos.
 - INDEX (`status`)
 
 **Relaciones:**
+
 - `belongsTo(Customer)`
 - `belongsTo(ImportBatch)`
 - `hasMany(InvoiceItem)`
@@ -165,6 +224,7 @@ Facturas importadas de sistemas externos.
 Líneas de detalle de cada factura.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `invoice_id` - bigint, FK
 - `product_id` - bigint, FK
@@ -179,11 +239,13 @@ Líneas de detalle de cada factura.
 - `updated_at` - timestamp
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - INDEX (`invoice_id`)
 - INDEX (`product_id`)
 
 **Relaciones:**
+
 - `belongsTo(Invoice)`
 - `belongsTo(Product)`
 
@@ -196,7 +258,9 @@ Líneas de detalle de cada factura.
 Define escenarios de proyección con diferentes supuestos.
 
 **Campos:**
+
 - `id` - bigint, PK
+- `organization_id` - bigint, FK
 - `user_id` - bigint, FK
 - `name` - string(255)
 - `description` - text, nullable
@@ -212,12 +276,15 @@ Define escenarios de proyección con diferentes supuestos.
 - `deleted_at` - timestamp, nullable
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
+- INDEX (`organization_id`)
 - INDEX (`user_id`)
 - INDEX (`status`)
 - INDEX (`is_baseline`)
 
 **Relaciones:**
+
 - `belongsTo(User)`
 - `hasMany(ScenarioAssumption)`
 - `hasMany(Projection)`
@@ -229,6 +296,7 @@ Define escenarios de proyección con diferentes supuestos.
 Supuestos de crecimiento que pueden variar por año, tipo de cliente, grupo empresarial y producto.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `scenario_id` - bigint, FK
 - `year` - integer (año de aplicación)
@@ -245,18 +313,22 @@ Supuestos de crecimiento que pueden variar por año, tipo de cliente, grupo empr
 - `updated_at` - timestamp
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - INDEX (`scenario_id`, `year`)
 - INDEX (`business_group_id`)
 - INDEX (`customer_type_id`)
 - INDEX (`customer_id`)
 - INDEX (`product_id`)
+- UNIQUE KEY idx_assumption_unique (`scenario_id`, `year`, COALESCE(`business_group_id`, 0), COALESCE(`customer_type_id`, 0), COALESCE(`customer_id`, 0), COALESCE(`product_id`, 0))
 
 **Reglas de Negocio:**
+
 - Los supuestos más específicos (a nivel cliente/producto) sobrescriben los generales
 - Jerarquía: Cliente específico > Grupo empresarial > Tipo de cliente > Global
 
 **Relaciones:**
+
 - `belongsTo(Scenario)`
 - `belongsTo(BusinessGroup)`
 - `belongsTo(CustomerType)`
@@ -270,6 +342,7 @@ Supuestos de crecimiento que pueden variar por año, tipo de cliente, grupo empr
 Tasas de inflación por año para cálculos.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `year` - integer
 - `rate` - decimal(5,2) (porcentaje anual)
@@ -279,6 +352,7 @@ Tasas de inflación por año para cálculos.
 - `updated_at` - timestamp
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - UNIQUE KEY (`year`)
 
@@ -291,6 +365,7 @@ Tasas de inflación por año para cálculos.
 Proyecciones consolidadas por año y dimensión.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `scenario_id` - bigint, FK
 - `year` - integer
@@ -298,7 +373,9 @@ Proyecciones consolidadas por año y dimensión.
 - `customer_type_id` - bigint, FK, nullable
 - `customer_id` - bigint, FK, nullable
 - `product_id` - bigint, FK, nullable
-- `total_amount` - decimal(15,2)
+- `total_subtotal` - decimal(15,2) (subtotal proyectado sin impuestos)
+- `total_tax` - decimal(15,2) (impuestos proyectados)
+- `total_amount` - decimal(15,2) (total = subtotal + tax)
 - `total_with_inflation` - decimal(15,2)
 - `base_amount` - decimal(15,2) (promedio histórico sin ajustes)
 - `growth_applied` - decimal(5,2) (% de crecimiento aplicado)
@@ -307,17 +384,20 @@ Proyecciones consolidadas por año y dimensión.
 - `calculated_at` - timestamp
 - `created_at` - timestamp
 - `updated_at` - timestamp
+- `deleted_at` - timestamp, nullable
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - INDEX (`scenario_id`, `year`)
 - INDEX (`business_group_id`)
 - INDEX (`customer_type_id`)
 - INDEX (`customer_id`)
 - INDEX (`product_id`)
-- UNIQUE KEY (`scenario_id`, `year`, `business_group_id`, `customer_type_id`, `customer_id`, `product_id`)
+- UNIQUE KEY idx_projection_unique (`scenario_id`, `year`, COALESCE(`business_group_id`, 0), COALESCE(`customer_type_id`, 0), COALESCE(`customer_id`, 0), COALESCE(`product_id`, 0))
 
 **Relaciones:**
+
 - `belongsTo(Scenario)`
 - `belongsTo(BusinessGroup)`
 - `belongsTo(CustomerType)`
@@ -332,21 +412,30 @@ Proyecciones consolidadas por año y dimensión.
 Desagregación mensual de cada proyección anual.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `projection_id` - bigint, FK
-- `month` - tinyint (1-12)
-- `amount` - decimal(15,2)
+- `month` - tinyint (1-12, donde 1=enero del año de proyección)
+- `subtotal` - decimal(15,2) (subtotal mensual sin impuestos)
+- `tax` - decimal(15,2) (impuestos mensuales)
+- `amount` - decimal(15,2) (total mensual = subtotal + tax)
 - `base_amount` - decimal(15,2) (sin ajustes)
 - `seasonality_factor` - decimal(5,4), default 1.0000 (factor estacional)
 - `created_at` - timestamp
 - `updated_at` - timestamp
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - UNIQUE KEY (`projection_id`, `month`)
 - INDEX (`projection_id`)
 
+**Notas:**
+
+- `month` es relativo al año de proyección (1=enero, 12=diciembre del año especificado en `Projection.year`)
+
 **Relaciones:**
+
 - `belongsTo(Projection)`
 
 ---
@@ -358,6 +447,7 @@ Desagregación mensual de cada proyección anual.
 Registro de lotes de importación de datos históricos.
 
 **Campos:**
+
 - `id` - bigint, PK
 - `user_id` - bigint, FK
 - `filename` - string(255)
@@ -375,12 +465,14 @@ Registro de lotes de importación de datos históricos.
 - `updated_at` - timestamp
 
 **Índices:**
+
 - PRIMARY KEY (`id`)
 - INDEX (`user_id`)
 - INDEX (`status`)
 - INDEX (`import_type`)
 
 **Relaciones:**
+
 - `belongsTo(User)`
 - `hasMany(Invoice)`
 
@@ -391,21 +483,32 @@ Registro de lotes de importación de datos históricos.
 ### Diagrama de Relaciones Principal
 
 ```
+Organization (Multi-tenancy)
+  ├─ hasMany → BusinessGroup
+  ├─ hasMany → CustomerType
+  ├─ hasMany → Customer
+  ├─ hasMany → Product
+  └─ hasMany → Scenario
+
 User (Laravel Auth)
   ├─ hasMany → Scenario
-  └─ hasMany → ImportBatch
+  ├─ hasMany → ImportBatch
+  └─ belongsToMany → Organization (many-to-many)
 
 BusinessGroup
+  ├─ belongsTo → Organization
   ├─ hasMany → Customer
   ├─ hasMany → ScenarioAssumption
   └─ hasMany → Projection
 
 CustomerType
+  ├─ belongsTo → Organization
   ├─ hasMany → Customer
   ├─ hasMany → ScenarioAssumption
   └─ hasMany → Projection
 
 Customer
+  ├─ belongsTo → Organization
   ├─ belongsTo → BusinessGroup
   ├─ belongsTo → CustomerType
   ├─ hasMany → Invoice
@@ -413,6 +516,7 @@ Customer
   └─ hasMany → Projection
 
 Product
+  ├─ belongsTo → Organization
   ├─ hasMany → InvoiceItem
   ├─ hasMany → ScenarioAssumption
   └─ hasMany → Projection
@@ -427,6 +531,7 @@ InvoiceItem
   └─ belongsTo → Product
 
 Scenario
+  ├─ belongsTo → Organization
   ├─ belongsTo → User
   ├─ hasMany → ScenarioAssumption
   └─ hasMany → Projection
@@ -463,23 +568,27 @@ ImportBatch
 Para optimizar consultas de reporting y proyección:
 
 #### Tabla `invoices`
+
 ```sql
 INDEX idx_customer_date (customer_id, invoice_date)
 INDEX idx_date_range (invoice_date, status)
 ```
 
 #### Tabla `invoice_items`
+
 ```sql
 INDEX idx_invoice_product (invoice_id, product_id)
 ```
 
 #### Tabla `projections`
+
 ```sql
 INDEX idx_scenario_year (scenario_id, year)
 INDEX idx_multi_dimension (scenario_id, year, business_group_id, customer_type_id)
 ```
 
 #### Tabla `scenario_assumptions`
+
 ```sql
 INDEX idx_scenario_year_hierarchy (scenario_id, year, customer_id, product_id)
 ```
@@ -489,7 +598,8 @@ INDEX idx_scenario_year_hierarchy (scenario_id, year, customer_id, product_id)
 1. **Particionamiento**: Considerar particionar `invoices` por año si el volumen crece significativamente
 2. **Materialización**: Las proyecciones son pre-calculadas y almacenadas (no en tiempo real)
 3. **Caché**: Usar caché de Redis para escenarios activos y comparativas frecuentes
-4. **Soft Deletes**: Solo en modelos maestros (CustomerType, BusinessGroup, Customer, Product, Scenario)
+4. **Soft Deletes**: Solo en modelos maestros (CustomerType, BusinessGroup, Customer, Product, Scenario, Projection)
+5. **Multi-tenancy**: Todas las consultas deben filtrar por `organization_id` usando Global Scopes en Laravel
 
 ---
 
@@ -583,8 +693,14 @@ $comparison = Projection::whereIn('scenario_id', [$scenario1->id, $scenario2->id
 ### Cálculo de Proyecciones
 
 ```
-ProyecciónMensual = PromedioHistórico × (1 + TasaCrecimiento/100) × (1 + Inflación/100) × FactorEstacionalidad
-ProyecciónAnual = Σ(ProyeccionMensual[1..12])
+SubtotalMensual = PromedioHistóricoSubtotal × (1 + TasaCrecimiento/100) × (1 + Inflación/100) × FactorEstacionalidad
+TaxMensual = PromedioHistóricoTax × (1 + TasaCrecimiento/100) × (1 + Inflación/100) × FactorEstacionalidad
+TotalMensual = SubtotalMensual + TaxMensual
+
+ProyecciónAnual:
+  total_subtotal = Σ(SubtotalMensual[1..12])
+  total_tax = Σ(TaxMensual[1..12])
+  total_amount = total_subtotal + total_tax
 ```
 
 ### Recalculo de Proyecciones
@@ -597,18 +713,19 @@ ProyecciónAnual = Σ(ProyeccionMensual[1..12])
 
 ## Migraciones Sugeridas (Orden de Ejecución)
 
-1. `create_business_groups_table`
-2. `create_customer_types_table`
-3. `create_customers_table`
-4. `create_products_table`
-5. `create_import_batches_table`
-6. `create_invoices_table`
-7. `create_invoice_items_table`
-8. `create_scenarios_table`
-9. `create_inflation_rates_table`
-10. `create_scenario_assumptions_table`
-11. `create_projections_table`
-12. `create_projection_details_table`
+1. `create_organizations_table` (nueva - soporte multi-tenancy)
+2. `create_business_groups_table`
+3. `create_customer_types_table`
+4. `create_customers_table`
+5. `create_products_table`
+6. `create_import_batches_table`
+7. `create_invoices_table`
+8. `create_invoice_items_table`
+9. `create_scenarios_table`
+10. `create_inflation_rates_table`
+11. `create_scenario_assumptions_table`
+12. `create_projections_table`
+13. `create_projection_details_table`
 
 ---
 
@@ -620,8 +737,9 @@ ProyecciónAnual = Σ(ProyeccionMensual[1..12])
 - **Diferentes métodos de cálculo**: Enum `calculation_method` permite agregar nuevos métodos
 - **Segmentación adicional**: Campo `metadata` (JSON) en todos los modelos permite datos extra
 - **Aprobación de escenarios**: Agregar workflow con estados adicionales
-- **Versioning de proyecciones**: Agregar campo `version` a `Projection` si se requiere historial
+- **Versioning de proyecciones**: El campo `deleted_at` permite soft-delete y mantener historial
 - **Alertas y notificaciones**: Cuando proyecciones varían significativamente del histórico
+- **Multi-tenancy completo**: Ya implementado con `organization_id` en todas las tablas principales
 
 ---
 
@@ -630,6 +748,7 @@ ProyecciónAnual = Σ(ProyeccionMensual[1..12])
 ### Factories y Seeders
 
 Crear factories robustos para:
+
 - `BusinessGroup`, `CustomerType`, `Customer`, `Product` (maestros)
 - `Invoice` con `InvoiceItem` relacionados
 - `Scenario` con `ScenarioAssumption`
@@ -648,9 +767,28 @@ Crear factories robustos para:
 - **Jobs** para calcular proyecciones en background
 - **API Resources** para exponer proyecciones y comparativas
 - **Query Scopes** para filtros comunes (active, by year, by customer type, etc.)
+- **Global Scopes** para multi-tenancy: filtrar automáticamente por `organization_id` en todos los modelos
+- **Constraint COALESCE**: Usar `DB::raw()` en migrations para constraints con COALESCE en campos nullable
 
 ---
 
 **Documento generado:** 2025-11-13
-**Versión:** 1.0
+**Versión:** 2.0
 **Autor:** Claude Code
+
+---
+
+## Changelog
+
+### v2.0 (2025-11-13)
+
+- ✅ **Multi-tenancy**: Agregado campo `organization_id` a todas las tablas principales
+- ✅ **Constraints mejorados**: Implementado COALESCE en UNIQUE KEYs para manejar campos nullable correctamente
+- ✅ **Proyección de impuestos**: Separados campos `total_subtotal`, `total_tax` y `total_amount` en `Projection` y `ProjectionDetail`
+- ✅ **Soft deletes en Projection**: Agregado `deleted_at` para mantener historial de proyecciones
+- ✅ **Clarificación de month**: Documentado que `ProjectionDetail.month` es relativo al año de proyección (1=enero)
+- ✅ **Nueva tabla**: Agregado `organizations` (migración #1) para soporte multi-tenancy
+
+### v1.0 (2025-11-13)
+
+- Diseño inicial de base de datos
