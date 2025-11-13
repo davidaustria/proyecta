@@ -61,10 +61,10 @@ class CustomerFactory extends Factory
     /**
      * Indicate that the customer belongs to a business group.
      */
-    public function forBusinessGroup(BusinessGroup $businessGroup): static
+    public function forBusinessGroup(?BusinessGroup $businessGroup): static
     {
         return $this->state(fn (array $attributes) => [
-            'business_group_id' => $businessGroup->id,
+            'business_group_id' => $businessGroup?->id,
         ]);
     }
 
