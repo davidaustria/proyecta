@@ -59,6 +59,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('web.scenarios.index');
 
+    Route::get('scenarios/create', function () {
+        return Inertia::render('scenarios/create');
+    })->name('web.scenarios.create');
+
+    Route::get('scenarios/{scenario}/edit', function (\App\Models\Scenario $scenario) {
+        return Inertia::render('scenarios/[id]/edit', [
+            'scenario' => $scenario,
+        ]);
+    })->name('web.scenarios.edit');
+
     // Master Data
     Route::get('customers', function () {
         $query = \App\Models\Customer::query()
