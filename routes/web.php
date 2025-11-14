@@ -19,12 +19,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Scenarios
     Route::get('scenarios', function () {
         return Inertia::render('scenarios/index');
-    })->name('scenarios.index');
+    })->name('web.scenarios.index');
 
     // Master Data
     Route::get('customers', function () {
         return Inertia::render('customers/index');
-    })->name('customers.index');
+    })->name('web.customers.index');
 
     Route::get('customer-types', function () {
         $query = CustomerType::query()->orderBy('name');
@@ -43,25 +43,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'search' => request('search'),
             ],
         ]);
-    })->name('customer-types.index');
+    })->name('web.customer-types.index');
 
     Route::get('customer-types/create', function () {
         return Inertia::render('customer-types/create');
-    })->name('customer-types.create');
+    })->name('web.customer-types.create');
 
     Route::get('customer-types/{customerType}/edit', function (CustomerType $customerType) {
         return Inertia::render('customer-types/[id]/edit', [
             'customerType' => $customerType,
         ]);
-    })->name('customer-types.edit');
+    })->name('web.customer-types.edit');
 
     Route::get('business-groups', function () {
         return Inertia::render('business-groups/index');
-    })->name('business-groups.index');
+    })->name('web.business-groups.index');
 
     Route::get('products', function () {
         return Inertia::render('products/index');
-    })->name('products.index');
+    })->name('web.products.index');
 
     // Import
     Route::get('import', function () {
@@ -75,7 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('settings/inflation-rates', [
             'inflationRates' => $inflationRates,
         ]);
-    })->name('inflation-rates.index');
+    })->name('web.inflation-rates.index');
 
     // Inflation Rates Management (Session-authenticated endpoints for Inertia)
     Route::post('api/inflation-rates', [\App\Http\Controllers\InflationRateController::class, 'store']);
