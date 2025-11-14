@@ -4,7 +4,8 @@
       "Bash(npm run format:*)",
       "Bash(php artisan:*)",
       "Bash(vendor/bin/pint:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git commit:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
