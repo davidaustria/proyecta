@@ -17,14 +17,12 @@ import { Link } from '@inertiajs/react';
 import {
     BookOpen,
     Building2,
-    FileSpreadsheet,
     Folder,
     FolderKanban,
     Gauge,
     LayoutGrid,
     LineChart,
     Package,
-    Settings,
     Upload,
     Users,
 } from 'lucide-react';
