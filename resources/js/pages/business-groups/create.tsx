@@ -11,7 +11,7 @@ import { index as businessGroupsIndex } from '@/routes/business-groups';
 import { Head, router } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
-interface BusinessGroupFormData extends Record<string, unknown> {
+interface BusinessGroupFormData {
     name: string;
     code: string;
     description: string;

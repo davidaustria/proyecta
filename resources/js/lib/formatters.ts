@@ -136,11 +136,12 @@ export function formatDate(
         }
 
         // Handle Intl.DateTimeFormat presets
-        const options: Intl.DateTimeFormatOptions = {
+        const optionsMap: Record<string, Intl.DateTimeFormatOptions> = {
             short: { day: '2-digit', month: '2-digit', year: '2-digit' },
             medium: { day: '2-digit', month: '2-digit', year: 'numeric' },
             long: { day: 'numeric', month: 'long', year: 'numeric' },
-        }[format];
+        };
+        const options = optionsMap[format];
 
         return new Intl.DateTimeFormat(locale, options).format(dateObj);
     } catch (error) {
@@ -200,7 +201,7 @@ export function formatDateTime(
     }
 
     try {
-        const options: Intl.DateTimeFormatOptions = {
+        const optionsMap: Record<string, Intl.DateTimeFormatOptions> = {
             short: {
                 day: '2-digit',
                 month: '2-digit',
@@ -223,7 +224,8 @@ export function formatDateTime(
                 minute: '2-digit',
                 second: '2-digit',
             },
-        }[format];
+        };
+        const options = optionsMap[format];
 
         return new Intl.DateTimeFormat(locale, options).format(dateObj);
     } catch (error) {

@@ -12,7 +12,7 @@ import type { CustomerType } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
-interface CustomerTypeFormData extends Record<string, unknown> {
+interface CustomerTypeFormData {
     name: string;
     code: string;
     description: string;

@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import type { Product } from '@/types';
 import React, { FormEvent } from 'react';
 
-export interface ProductFormData extends Record<string, unknown> {
+export interface ProductFormData {
     name: string;
     code: string;
     description: string;

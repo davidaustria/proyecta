@@ -12,7 +12,7 @@ import type { BusinessGroup } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
-interface BusinessGroupFormData extends Record<string, unknown> {
+interface BusinessGroupFormData {
     name: string;
     code: string;
     description: string;

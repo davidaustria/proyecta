@@ -1,4 +1,5 @@
-import { useForm, type InertiaFormProps } from '@inertiajs/react';
+import type { FormDataType, VisitOptions } from '@inertiajs/core';
+import { useForm } from '@inertiajs/react';
 
 /**
  * Type for Wayfinder route objects
@@ -7,6 +8,11 @@ type WayfinderRoute = {
     url: string;
     method: 'get' | 'post' | 'put' | 'patch' | 'delete';
 };
+
+/**
+ * Form submission options (matches Inertia's FormOptions)
+ */
+type FormOptions = Omit<VisitOptions, 'data'>;
 
 /**
  * Options for useInertiaForm
@@ -59,9 +65,9 @@ type UseInertiaFormOptions<TForm> = {
  * };
  * ```
  */
-export function useInertiaForm<
-    TForm extends Record<string, unknown> = Record<string, unknown>,
->(options: UseInertiaFormOptions<TForm> = {}) {
+export function useInertiaForm<TForm extends FormDataType<TForm>>(
+    options: UseInertiaFormOptions<TForm> = {},
+) {
     const {
         initialValues = {} as TForm,
         preserveScroll = false,
@@ -79,12 +85,12 @@ export function useInertiaForm<
      */
     const submit = (
         route: WayfinderRoute | string,
-        submitOptions?: Partial<InertiaFormProps<TForm>>,
+        submitOptions?: FormOptions,
     ) => {
         const url = typeof route === 'string' ? route : route.url;
         const method = typeof route === 'string' ? 'post' : route.method;
 
-        const defaultOptions: Partial<InertiaFormProps<TForm>> = {
+        const defaultOptions: FormOptions = {
             preserveScroll,
             preserveState,
             onSuccess: (page) => {
@@ -94,7 +100,7 @@ export function useInertiaForm<
                 onSuccess?.(page);
             },
             onError: (errors) => {
-                onError?.(errors);
+                onError?.(errors as Record<string, string>);
             },
             onFinish: () => {
                 onFinish?.();
@@ -111,10 +117,10 @@ export function useInertiaForm<
      */
     const submitGet = (
         route: WayfinderRoute | string,
-        submitOptions?: Partial<InertiaFormProps<TForm>>,
+        options?: FormOptions,
     ) => {
         const url = typeof route === 'string' ? route : route.url;
-        form.get(url, submitOptions);
+        form.get(url, options);
     };
 
     /**
@@ -122,10 +128,10 @@ export function useInertiaForm<
      */
     const submitPost = (
         route: WayfinderRoute | string,
-        submitOptions?: Partial<InertiaFormProps<TForm>>,
+        options?: FormOptions,
     ) => {
         const url = typeof route === 'string' ? route : route.url;
-        form.post(url, submitOptions);
+        form.post(url, options);
     };
 
     /**
@@ -133,10 +139,10 @@ export function useInertiaForm<
      */
     const submitPut = (
         route: WayfinderRoute | string,
-        submitOptions?: Partial<InertiaFormProps<TForm>>,
+        options?: FormOptions,
     ) => {
         const url = typeof route === 'string' ? route : route.url;
-        form.put(url, submitOptions);
+        form.put(url, options);
     };
 
     /**
@@ -144,10 +150,10 @@ export function useInertiaForm<
      */
     const submitPatch = (
         route: WayfinderRoute | string,
-        submitOptions?: Partial<InertiaFormProps<TForm>>,
+        options?: FormOptions,
     ) => {
         const url = typeof route === 'string' ? route : route.url;
-        form.patch(url, submitOptions);
+        form.patch(url, options);
     };
 
     /**
@@ -155,10 +161,10 @@ export function useInertiaForm<
      */
     const submitDelete = (
         route: WayfinderRoute | string,
-        submitOptions?: Partial<InertiaFormProps<TForm>>,
+        options?: FormOptions,
     ) => {
         const url = typeof route === 'string' ? route : route.url;
-        form.delete(url, submitOptions);
+        form.delete(url, options);
     };
 
     return {

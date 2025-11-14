@@ -13,7 +13,7 @@ import {
 import type { BusinessGroup, Customer, CustomerType } from '@/types';
 import { FormEvent } from 'react';
 
-export interface CustomerFormData extends Record<string, unknown> {
+export interface CustomerFormData {
     name: string;
     code: string;
     tax_id: string;

@@ -11,7 +11,7 @@ import { index as customerTypesIndex } from '@/routes/customer-types';
 import { Head, router } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
-interface CustomerTypeFormData extends Record<string, unknown> {
+interface CustomerTypeFormData {
     name: string;
     code: string;
     description: string;
