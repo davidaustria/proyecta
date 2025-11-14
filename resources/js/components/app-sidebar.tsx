@@ -1,4 +1,5 @@
 import { NavFooter } from '@/components/nav-footer';
+import { NavGroup } from '@/components/nav-group';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -11,9 +12,22 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { type NavItem } from '@/types';
+import { type NavGroup as NavGroupType, type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    Building2,
+    FileSpreadsheet,
+    Folder,
+    FolderKanban,
+    Gauge,
+    LayoutGrid,
+    LineChart,
+    Package,
+    Settings,
+    Upload,
+    Users,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -22,7 +36,57 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Escenarios',
+        href: '/scenarios',
+        icon: FolderKanban,
+    },
 ];
+
+const masterDataGroup: NavGroupType = {
+    title: 'Datos Maestros',
+    items: [
+        {
+            title: 'Clientes',
+            href: '/customers',
+            icon: Users,
+        },
+        {
+            title: 'Tipos de Cliente',
+            href: '/customer-types',
+            icon: Gauge,
+        },
+        {
+            title: 'Grupos Empresariales',
+            href: '/business-groups',
+            icon: Building2,
+        },
+        {
+            title: 'Productos',
+            href: '/products',
+            icon: Package,
+        },
+    ],
+};
+
+const otherNavItems: NavItem[] = [
+    {
+        title: 'Importación',
+        href: '/import',
+        icon: Upload,
+    },
+];
+
+const configurationGroup: NavGroupType = {
+    title: 'Configuración',
+    items: [
+        {
+            title: 'Tasas de Inflación',
+            href: '/inflation-rates',
+            icon: LineChart,
+        },
+    ],
+};
 
 const footerNavItems: NavItem[] = [
     {
@@ -54,6 +118,9 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <NavGroup groups={[masterDataGroup]} />
+                <NavMain items={otherNavItems} />
+                <NavGroup groups={[configurationGroup]} />
             </SidebarContent>
 
             <SidebarFooter>
