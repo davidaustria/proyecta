@@ -41,8 +41,8 @@ describe('ProjectionCalculatorService', function () {
         it('rounds to 2 decimal places', function () {
             $result = $this->service->applyGrowthAndInflation(1000, 3.33, 2.22);
             // 1000 * 1.0333 = 1033.3
-            // 1033.3 * 1.0222 = 1056.27
-            expect($result)->toBe(1056.27);
+            // 1033.3 * 1.0222 = 1056.2373
+            expect($result)->toBe(1056.24);
         });
     });
 
