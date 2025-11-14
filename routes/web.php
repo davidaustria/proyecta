@@ -12,9 +12,8 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    // Dashboard
+    Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     // Scenarios
     Route::get('scenarios', function () {
@@ -86,6 +85,80 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('web.scenarios.assumptions');
 
+    Route::get('scenarios/compare', function () {
+        $scenarios = \App\Models\Scenario::orderBy('name')->get(['id', 'name', 'is_baseline', 'status', 'base_year', 'projection_years']);
+        $customerTypes = \App\Models\CustomerType::orderBy('name')->get();
+        $businessGroups = \App\Models\BusinessGroup::orderBy('name')->get();
+
+        $scenarioIds = request('scenarios', []);
+        $year = request('year');
+        $customerTypeId = request('customer_type_id');
+        $businessGroupId = request('business_group_id');
+
+        $comparisonData = [];
+        if (count($scenarioIds) >= 2) {
+            $query = \App\Models\Projection::query()
+                ->with('scenario')
+                ->whereIn('scenario_id', $scenarioIds);
+
+            if ($year) {
+                $query->where('year', $year);
+            }
+
+            if ($customerTypeId) {
+                $query->where('customer_type_id', $customerTypeId);
+            }
+
+            if ($businessGroupId) {
+                $query->where('business_group_id', $businessGroupId);
+            }
+
+            $projections = $query->get();
+
+            $comparisonData = $projections->map(function ($projection) {
+                return [
+                    'scenario_id' => $projection->scenario_id,
+                    'scenario_name' => $projection->scenario->name,
+                    'year' => $projection->year,
+                    'total_amount' => $projection->total_amount,
+                    'total_subtotal' => $projection->total_subtotal,
+                    'total_tax' => $projection->total_tax,
+                    'growth_rate' => $projection->growth_rate,
+                    'inflation_rate' => $projection->inflation_rate,
+                ];
+            })->toArray();
+        }
+
+        return Inertia::render('scenarios/compare', [
+            'scenarios' => $scenarios,
+            'customerTypes' => $customerTypes,
+            'businessGroups' => $businessGroups,
+            'comparisonData' => $comparisonData,
+            'selectedScenarios' => $scenarioIds,
+            'selectedYear' => $year,
+            'selectedCustomerTypeId' => $customerTypeId,
+            'selectedBusinessGroupId' => $businessGroupId,
+        ]);
+    })->name('scenarios.compare');
+
+    // Projections
+    Route::get('projections/{projection}', function (\App\Models\Projection $projection) {
+        $projection->load([
+            'scenario',
+            'customerType',
+            'businessGroup',
+            'customer',
+            'product',
+            'details' => function ($query) {
+                $query->orderBy('month');
+            },
+        ]);
+
+        return Inertia::render('projections/[id]/show', [
+            'projection' => $projection,
+        ]);
+    })->name('web.projections.show');
+
     // Master Data
     Route::get('customers', function () {
         $query = \App\Models\Customer::query()
@@ -129,6 +202,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ],
         ]);
     })->name('web.customers.index');
+
+    Route::get('customers/create', function () {
+        return Inertia::render('customers/create', [
+            'customerTypes' => \App\Models\CustomerType::orderBy('name')->get(),
+            'businessGroups' => \App\Models\BusinessGroup::orderBy('name')->get(),
+        ]);
+    })->name('web.customers.create');
+
+    Route::get('customers/{customer}/edit', function (\App\Models\Customer $customer) {
+        return Inertia::render('customers/[id]/edit', [
+            'customer' => $customer,
+            'customerTypes' => \App\Models\CustomerType::orderBy('name')->get(),
+            'businessGroups' => \App\Models\BusinessGroup::orderBy('name')->get(),
+        ]);
+    })->name('web.customers.edit');
+
+    Route::get('customers/{customer}', function (\App\Models\Customer $customer) {
+        $customer->loadCount('invoices');
+        return Inertia::render('customers/[id]/show', [
+            'customer' => $customer->load(['customerType', 'businessGroup']),
+        ]);
+    })->name('web.customers.show');
 
     Route::get('customer-types', function () {
         $query = CustomerType::query()->orderBy('name');
@@ -178,6 +273,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('web.business-groups.index');
 
+    Route::get('business-groups/create', function () {
+        return Inertia::render('business-groups/create');
+    })->name('web.business-groups.create');
+
+    Route::get('business-groups/{businessGroup}/edit', function (\App\Models\BusinessGroup $businessGroup) {
+        return Inertia::render('business-groups/[id]/edit', [
+            'businessGroup' => $businessGroup,
+        ]);
+    })->name('web.business-groups.edit');
+
     Route::get('products', function () {
         $query = \App\Models\Product::query()->orderBy('name');
 
@@ -201,6 +306,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ],
         ]);
     })->name('web.products.index');
+
+    Route::get('products/create', function () {
+        return Inertia::render('products/create');
+    })->name('web.products.create');
+
+    Route::get('products/{product}/edit', function (\App\Models\Product $product) {
+        return Inertia::render('products/[id]/edit', [
+            'product' => $product,
+        ]);
+    })->name('web.products.edit');
 
     // Import
     Route::get('import', function () {

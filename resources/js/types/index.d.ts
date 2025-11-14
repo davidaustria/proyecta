@@ -141,6 +141,57 @@ export interface ScenarioAssumption {
     hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';
 }
 
+export interface ProjectionDetail {
+    id: number;
+    projection_id: number;
+    month: number;
+    subtotal: number;
+    tax: number;
+    total: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Projection {
+    id: number;
+    scenario_id: number;
+    year: number;
+    customer_type_id?: number;
+    business_group_id?: number;
+    customer_id?: number;
+    product_id?: number;
+    base_amount: number;
+    growth_rate: number;
+    inflation_rate: number;
+    total_subtotal: number;
+    total_tax: number;
+    total_amount: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at?: string;
+    scenario?: Scenario;
+    customer_type?: CustomerType;
+    business_group?: BusinessGroup;
+    customer?: Customer;
+    product?: Product;
+    details?: ProjectionDetail[];
+}
+
+// Dashboard specific types
+export interface DashboardKPI {
+    total_projected: number;
+    vs_historical: number;
+    annual_growth: number;
+    inflation_applied: number;
+}
+
+export interface DashboardFilters {
+    scenario_id?: number;
+    years?: number[];
+    customer_type_id?: number;
+    business_group_id?: number;
+}
+
 // Pagination
 export interface PaginatedData<T> {
     data: T[];
