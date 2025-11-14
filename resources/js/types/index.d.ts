@@ -97,6 +97,50 @@ export interface InflationRate {
     updated_at: string;
 }
 
+export interface Scenario {
+    id: number;
+    name: string;
+    description?: string;
+    base_year: number;
+    historical_months: number;
+    projection_years: number;
+    status: 'draft' | 'active' | 'archived';
+    is_baseline: boolean;
+    calculation_method: 'simple_average' | 'weighted_average' | 'trend';
+    include_inflation: boolean;
+    created_at: string;
+    updated_at: string;
+    user: {
+        id: number;
+        name?: string;
+    };
+    assumptions_count?: number;
+    projections_count?: number;
+}
+
+export interface ScenarioAssumption {
+    id: number;
+    scenario_id: number;
+    year: number;
+    growth_rate?: number;
+    inflation_rate?: number;
+    adjustment_type: 'percentage' | 'fixed_amount';
+    fixed_amount?: number;
+    seasonality_factors?: number[];
+    notes?: string;
+    created_at: string;
+    updated_at: string;
+    business_group_id?: number;
+    customer_type_id?: number;
+    customer_id?: number;
+    product_id?: number;
+    business_group?: BusinessGroup;
+    customer_type?: CustomerType;
+    customer?: Customer;
+    product?: Product;
+    hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';
+}
+
 // Pagination
 export interface PaginatedData<T> {
     data: T[];

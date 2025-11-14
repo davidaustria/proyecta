@@ -22,7 +22,7 @@ class UpdateScenarioRequest extends FormRequest
             'projection_years' => ['sometimes', 'required', 'integer', 'min:1', 'max:10'],
             'status' => ['sometimes', 'required', 'string', 'in:draft,active,archived'],
             'is_baseline' => ['boolean'],
-            'calculation_method' => ['sometimes', 'required', 'string', 'in:simple_average,weighted_average,trend_based'],
+            'calculation_method' => ['sometimes', 'required', 'string', 'in:simple_average,weighted_average,trend'],
             'include_inflation' => ['boolean'],
         ];
     }
@@ -46,7 +46,7 @@ class UpdateScenarioRequest extends FormRequest
             'projection_years.min' => 'Se requiere al menos 1 año de proyección.',
             'projection_years.max' => 'No se pueden proyectar más de 10 años.',
             'status.in' => 'El estado debe ser: draft, active o archived.',
-            'calculation_method.in' => 'El método de cálculo debe ser: simple_average, weighted_average o trend_based.',
+            'calculation_method.in' => 'El método de cálculo debe ser: simple_average, weighted_average o trend.',
         ];
     }
 }

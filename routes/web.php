@@ -18,8 +18,73 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Scenarios
     Route::get('scenarios', function () {
-        return Inertia::render('scenarios/index');
+        $query = \App\Models\Scenario::query()
+            ->with('user')
+            ->withCount(['assumptions', 'projections'])
+            ->orderBy('created_at', 'desc');
+
+        // Search filter
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Status filter
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        // Baseline filter
+        if (request('baseline') !== null && request('baseline') !== 'all') {
+            $query->where('is_baseline', request('baseline'));
+        }
+
+        // User filter
+        if (request('user')) {
+            $query->where('user_id', request('user'));
+        }
+
+        return Inertia::render('scenarios/index', [
+            'scenarios' => $query->paginate(15),
+            'users' => \App\Models\User::orderBy('name')->get(['id', 'name']),
+            'filters' => [
+                'search' => request('search'),
+                'status' => request('status'),
+                'baseline' => request('baseline'),
+                'user' => request('user'),
+            ],
+        ]);
     })->name('web.scenarios.index');
+
+    Route::get('scenarios/create', function () {
+        return Inertia::render('scenarios/create');
+    })->name('web.scenarios.create');
+
+    Route::get('scenarios/{scenario}/edit', function (\App\Models\Scenario $scenario) {
+        return Inertia::render('scenarios/[id]/edit', [
+            'scenario' => $scenario,
+        ]);
+    })->name('web.scenarios.edit');
+
+    Route::get('scenarios/{scenario}/assumptions', function (\App\Models\Scenario $scenario) {
+        $assumptions = $scenario->assumptions()
+            ->with(['customerType', 'businessGroup', 'customer', 'product'])
+            ->orderBy('year')
+            ->orderBy('hierarchy_level')
+            ->get();
+
+        return Inertia::render('scenarios/[id]/assumptions', [
+            'scenario' => $scenario,
+            'assumptions' => $assumptions,
+            'customerTypes' => \App\Models\CustomerType::orderBy('name')->get(),
+            'businessGroups' => \App\Models\BusinessGroup::orderBy('name')->get(),
+            'customers' => \App\Models\Customer::where('is_active', true)->orderBy('name')->get(['id', 'name', 'code']),
+            'products' => \App\Models\Product::where('is_active', true)->orderBy('name')->get(['id', 'name', 'code']),
+        ]);
+    })->name('web.scenarios.assumptions');
 
     // Master Data
     Route::get('customers', function () {

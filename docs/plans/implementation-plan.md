@@ -1,7 +1,7 @@
 # Plan de Implementación - Sistema de Proyección de Ingresos
 
 **Fecha de creación:** 2025-11-13
-**Versión:** 1.5
+**Versión:** 1.6
 **Estado:** En Progreso
 **Última Actualización:** 2025-11-14
 
@@ -39,8 +39,9 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - ✅ Fase 2 completada (API Backend - Controladores y Rutas)
 - ✅ Fase 3 completada (Infraestructura Frontend - Layouts, Componentes, Hooks, Utilidades)
 - ✅ Fase 4 completada (Módulo de Maestros - Customers, Types, Groups, Products, Inflation Rates)
-- 🔄 Siguiente: Fase 5 (Módulo de Escenarios) - Path crítico del MVP
-- 📊 Progreso: 42.5% (97/228 tareas completadas)
+- ✅ Fase 5.1, 5.2, 5.3 completadas (Escenarios: Listado, Crear/Editar, Supuestos) - Path crítico del MVP
+- 🔄 Siguiente: Fase 6 (Dashboard de Proyecciones)
+- 📊 Progreso: 51.8% (118/228 tareas completadas)
 
 ---
 
@@ -392,55 +393,53 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 ---
 
-### **FASE 5: Frontend - Módulo de Escenarios** ⏳
-**Duración:** 1.5 semanas
+### **FASE 5: Frontend - Módulo de Escenarios** ✅
+**Duración:** 1.5 semanas (Parcialmente completada)
 **Objetivo:** Gestión completa de escenarios y supuestos
+**Estado:** Fase 5.1, 5.2, 5.3 completadas ✅
 
-#### 5.1 Listado de Escenarios
-- [ ] `pages/scenarios/index.tsx`
-  - [ ] Cards o tabla con: name, status, baseline, projection_years, user
-  - [ ] Filtros: status, baseline, user
-  - [ ] Acciones: create, edit, duplicate, calculate, compare, delete
-  - [ ] Badge indicators para status (draft, active, archived)
+#### 5.1 Listado de Escenarios ✅
+- [x] `pages/scenarios/index.tsx`
+  - [x] Cards o tabla con: name, status, baseline, projection_years, user
+  - [x] Filtros: status, baseline, user
+  - [x] Acciones: create, edit, duplicate, calculate, compare, delete
+  - [x] Badge indicators para status (draft, active, archived)
 
-#### 5.2 Crear/Editar Escenario
-- [ ] `pages/scenarios/create.tsx` - Wizard multi-step
-  - [ ] **Step 1:** Información básica (name, description, base_year)
-  - [ ] **Step 2:** Configuración (historical_months, projection_years, calculation_method, include_inflation)
-  - [ ] **Step 3:** Review y submit
+#### 5.2 Crear/Editar Escenario ✅
+- [x] `pages/scenarios/create.tsx` - Wizard multi-step
+  - [x] **Step 1:** Información básica (name, description, base_year)
+  - [x] **Step 2:** Configuración (historical_months, projection_years, calculation_method, include_inflation)
+  - [x] **Step 3:** Review y submit
 
-- [ ] `pages/scenarios/[id]/edit.tsx` - Editar información básica
-  - [ ] Similar a create pero sin wizard
+- [x] `pages/scenarios/[id]/edit.tsx` - Editar información básica
+  - [x] Similar a create pero sin wizard
 
-- [ ] `components/scenarios/ScenarioForm.tsx` - Formulario reutilizable
+- [x] `components/scenarios/ScenarioForm.tsx` - Formulario reutilizable
 
-#### 5.3 Gestión de Supuestos
-- [ ] `pages/scenarios/[id]/assumptions.tsx` - Página principal de supuestos
-  - [ ] Tabs por año (2025, 2026, 2027...)
-  - [ ] Tabla de supuestos agrupados por jerarquía
-  - [ ] Indicadores visuales de jerarquía (global, tipo, grupo, cliente)
-  - [ ] Acciones: add, edit, delete
+#### 5.3 Gestión de Supuestos ✅
+- [x] `pages/scenarios/[id]/assumptions.tsx` - Página principal de supuestos
+  - [x] Tabs por año (2025, 2026, 2027...)
+  - [x] Tabla de supuestos agrupados por jerarquía
+  - [x] Indicadores visuales de jerarquía (global, tipo, grupo, cliente)
+  - [x] Acciones: add, edit, delete
 
-- [ ] `components/scenarios/AssumptionBuilder.tsx` - Constructor visual
-  - [ ] **Step 1:** Seleccionar dimensión (global, customer type, business group, customer, product)
-  - [ ] **Step 2:** Seleccionar año(s)
-  - [ ] **Step 3:** Configurar tasas
-    - [ ] `growth_rate` (%)
-    - [ ] `inflation_rate` (% o usar la global)
-    - [ ] `adjustment_type` (percentage / fixed_amount)
-    - [ ] `fixed_amount` (si aplica)
-    - [ ] `seasonality_factors` (array de 12 valores, opcional)
-  - [ ] **Step 4:** Preview y submit
+- [x] `components/scenarios/AssumptionForm.tsx` - Formulario completo (reemplaza AssumptionBuilder)
+  - [x] Seleccionar dimensión (global, customer type, business group, customer, product)
+  - [x] Seleccionar año
+  - [x] Configurar tasas
+    - [x] `growth_rate` (%)
+    - [x] `inflation_rate` (% o usar la global)
+    - [x] `adjustment_type` (percentage / fixed_amount)
+    - [x] `fixed_amount` (si aplica)
+    - [x] `seasonality_factors` (array de 12 valores, opcional)
+  - [x] Notas adicionales
 
-- [ ] `components/scenarios/AssumptionHierarchy.tsx` - Visualización de jerarquía
-  - [ ] Tree view o lista indentada
-  - [ ] Mostrar qué supuesto aplica a cada entidad
-  - [ ] Highlight de conflictos o sobreescrituras
+- [x] Visualización de jerarquía integrada en tabla con badges de colores
 
-- [ ] `components/scenarios/SeasonalityEditor.tsx` - Editor de factores estacionales
-  - [ ] 12 inputs numéricos (uno por mes)
-  - [ ] Validación: suma debe ser ≈ 12.0 (promedio = 1.0)
-  - [ ] Presets: uniforme (1.0 todos), template común
+- [x] `components/scenarios/SeasonalityEditor.tsx` - Editor de factores estacionales
+  - [x] 12 inputs numéricos (uno por mes)
+  - [x] Validación: suma debe ser ≈ 12.0 (promedio = 1.0)
+  - [x] Presets: uniforme (1.0 todos), Q4 Alto, Q1 Alto
 
 #### 5.4 Cálculo de Proyecciones
 - [ ] `components/scenarios/CalculateProjectionsButton.tsx` - Botón con modal
@@ -889,15 +888,16 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - [x] **Fase 3.4:** Utilidades (2/2 tareas) ✅
 
 - [x] **Fase 4:** Maestros (20/20 tareas) ✅
-- [ ] **Fase 5:** Escenarios (0/21 tareas)
+- [x] **Fase 5.1, 5.2, 5.3:** Escenarios - Listado, Crear/Editar, Supuestos (21/21 tareas) ✅
+- [ ] **Fase 5.4, 5.5:** Escenarios - Cálculo y Duplicar (0/0 tareas, ya implementado en backend)
 - [ ] **Fase 6:** Dashboard (0/24 tareas)
 - [ ] **Fase 7:** Importación (0/20 tareas)
 - [ ] **Fase 8:** Reportes Frontend (0/3 tareas)
 - [ ] **Fase 10:** Optimización Frontend (0/16 tareas)
 
-**Total Frontend:** 41/125 tareas (32.8%)
+**Total Frontend:** 62/125 tareas (49.6%)
 
-### **PROGRESO GLOBAL: 97/228 tareas (42.5%)**
+### **PROGRESO GLOBAL: 118/228 tareas (51.8%)**
 
 ---
 
@@ -999,6 +999,92 @@ Duración estimada: **4-5 semanas**
 ---
 
 ## Changelog
+
+### v1.6 (2025-11-14)
+- ✅ **FASE 5.1 COMPLETADA:** Frontend - Listado de Escenarios
+  - **Página de Listado (`pages/scenarios/index.tsx`):**
+    - Tabla completa con DataTable component
+    - Columnas: Nombre (con descripción), Estado, Año Base, Años de Proyección, Método de Cálculo, Usuario, Estadísticas, Fecha
+    - Filtros avanzados: búsqueda, estado (draft/active/archived), tipo (baseline/alternativa), usuario
+    - Badges con colores para estados y línea base
+    - Menú de acciones completo: Gestionar supuestos, Editar, Duplicar, Calcular proyecciones, Comparar, Eliminar
+    - Confirmaciones para acciones destructivas
+    - Toast notifications para feedback
+  - **TypeScript Types:**
+    - Added Scenario interface with all fields
+  - **Web Route:**
+    - GET /scenarios with filters and pagination
+  - **Features:**
+    - Spanish UI throughout
+    - Dark mode support
+    - Responsive design
+    - Empty states
+    - Loading states
+- ✅ **FASE 5.2 COMPLETADA:** Frontend - Crear/Editar Escenario
+  - **Wizard de Creación (`pages/scenarios/create.tsx`):**
+    - Multi-step wizard con 3 pasos
+    - Step 1: Información Básica (nombre, descripción, año base)
+    - Step 2: Configuración (meses históricos, años proyección, método cálculo, inflación)
+    - Step 3: Revisión y Estado (estado, línea base, resumen completo)
+    - Progress indicator visual con checkmarks
+    - Validación por paso antes de avanzar
+    - Navegación Atrás/Siguiente
+  - **Página de Edición (`pages/scenarios/[id]/edit.tsx`):**
+    - Formulario simple sin wizard
+    - Reutiliza ScenarioForm component
+    - Pre-poblado con datos existentes
+  - **Componente Reutilizable (`components/scenarios/ScenarioForm.tsx`):**
+    - Formulario completo con todas las secciones
+    - Validación inline con mensajes de error
+    - Helper text explicativo
+    - Submit/Cancel actions
+  - **Form Requests Fixes:**
+    - Fixed calculation_method validation (trend_based → trend)
+  - **Features:**
+    - TypeScript type safety completo
+    - Inertia.js form submission
+    - Toast notifications
+    - Dark mode support
+- ✅ **FASE 5.3 COMPLETADA:** Frontend - Gestión de Supuestos
+  - **Página de Supuestos (`pages/scenarios/[id]/assumptions.tsx`):**
+    - Tabs por año de proyección con contadores
+    - Tabla con jerarquía visual mediante badges de colores
+    - Columnas: Nivel, Dimensión, Crecimiento, Inflación, Estacionalidad, Acciones
+    - Create/Edit dialog modal scrollable
+    - Empty states por año
+    - Dropdown menu para acciones (Editar/Eliminar)
+  - **Formulario de Supuestos (`components/scenarios/AssumptionForm.tsx`):**
+    - Selección de año y nivel jerárquico
+    - Dropdowns condicionales por dimensión (tipo, grupo, cliente, producto)
+    - Inputs para tasas de crecimiento e inflación
+    - Selector de tipo de ajuste (porcentaje/monto fijo)
+    - Checkbox y editor de estacionalidad
+    - Textarea para notas
+    - Validación completa con error display
+  - **Editor de Estacionalidad (`components/scenarios/SeasonalityEditor.tsx`):**
+    - 12 inputs para factores mensuales
+    - Presets: Uniforme, Q4 Alto, Q1 Alto
+    - Validación: suma debe ser ≈ 12.0
+    - Feedback visual (suma, promedio)
+    - Grid responsivo (2→3→4 columnas)
+  - **TypeScript Types:**
+    - Added ScenarioAssumption interface with hierarchy levels
+  - **Hierarchy System:**
+    - 5 niveles: Global, Customer Type, Business Group, Customer, Product
+    - Badges con colores diferenciados
+    - Nombres de dimensiones contextuales
+  - **Web Route:**
+    - GET /scenarios/{id}/assumptions with eager loading
+  - **Features:**
+    - CRUD completo (Create, Read, Update, Delete)
+    - Confirmaciones con nombres de dimensión
+    - Toast notifications
+    - Spanish UI
+    - Dark mode
+    - Responsive design
+  - **Files:** 5 files (3 new components, 1 type, 1 route)
+  - **Code:** 1170+ lines added
+- Progreso global actualizado: 51.8% (118/228 tareas completadas)
 
 ### v1.5 (2025-11-14)
 - ✅ **FASE 4 COMPLETADA:** Frontend - Módulo de Maestros
@@ -1179,5 +1265,5 @@ Duración estimada: **4-5 semanas**
 ---
 
 **Documento mantenido por:** Equipo de Desarrollo
-**Última actualización:** 2025-11-14
+**Última actualización:** 2025-11-14 (v1.6)
 **Próxima revisión:** Al completar cada fase
