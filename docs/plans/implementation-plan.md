@@ -1,7 +1,7 @@
 # Plan de Implementación - Sistema de Proyección de Ingresos
 
 **Fecha de creación:** 2025-11-13
-**Versión:** 1.4
+**Versión:** 1.5
 **Estado:** En Progreso
 **Última Actualización:** 2025-11-14
 
@@ -37,10 +37,10 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 **Estado Actual (2025-11-14):**
 - ✅ Fase 1 completada (Servicios de Cálculo)
 - ✅ Fase 2 completada (API Backend - Controladores y Rutas)
-- ✅ Fase 3.1 completada (Layouts y Navegación)
-- ✅ Fase 3.3 completada (Hooks Personalizados)
-- ✅ Fase 3.4 completada (Utilidades)
-- 🔄 Siguiente: Fase 3.2 (Componentes Base Reutilizables), luego Fase 4 (Módulo de Maestros)
+- ✅ Fase 3 completada (Infraestructura Frontend - Layouts, Componentes, Hooks, Utilidades)
+- ✅ Fase 4 completada (Módulo de Maestros - Customers, Types, Groups, Products, Inflation Rates)
+- 🔄 Siguiente: Fase 5 (Módulo de Escenarios) - Path crítico del MVP
+- 📊 Progreso: 42.5% (97/228 tareas completadas)
 
 ---
 
@@ -327,60 +327,68 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 ---
 
-### **FASE 4: Frontend - Módulo de Maestros** ⏳
+### **FASE 4: Frontend - Módulo de Maestros** ✅
 **Duración:** 1 semana
+**Estado:** COMPLETADO (2025-11-14)
 **Objetivo:** CRUD completo de datos maestros
 
 #### 4.1 Customers (Clientes)
-- [ ] `pages/customers/index.tsx` - Listado
-  - [ ] DataTable con columnas: name, code, type, group, active
-  - [ ] Filtros: type, group, active status, search
-  - [ ] Acciones: create, edit, delete, view
-  - [ ] Paginación
+- [x] `pages/customers/index.tsx` - Listado
+  - [x] DataTable con columnas: name, code, type, group, active
+  - [x] Filtros: type, group, active status, search
+  - [x] Acciones: create, edit, delete, view
+  - [x] Paginación
 
-- [ ] `pages/customers/create.tsx` - Crear
-  - [ ] Form con Wayfinder
-  - [ ] Campos: name, code, tax_id, customer_type_id, business_group_id, is_active
-  - [ ] Validación client-side
+- [x] `pages/customers/create.tsx` - Crear
+  - [x] Form con Wayfinder
+  - [x] Campos: name, code, tax_id, customer_type_id, business_group_id, is_active
+  - [x] Validación client-side
 
-- [ ] `pages/customers/[id]/edit.tsx` - Editar
-  - [ ] Similar a create, pre-poblado
+- [x] `pages/customers/[id]/edit.tsx` - Editar
+  - [x] Similar a create, pre-poblado
 
-- [ ] `pages/customers/[id]/show.tsx` - Detalle
-  - [ ] Info del cliente
-  - [ ] Estadísticas de facturas históricas
-  - [ ] Proyecciones asociadas
+- [x] `pages/customers/[id]/show.tsx` - Detalle
+  - [x] Info del cliente
+  - [x] Estadísticas de facturas históricas
+  - [x] Proyecciones asociadas
 
-- [ ] `components/customers/CustomerForm.tsx` - Formulario reutilizable
+- [x] `components/customers/CustomerForm.tsx` - Formulario reutilizable
 
 #### 4.2 Customer Types (Tipos de Cliente)
-- [ ] `pages/customer-types/index.tsx` - Listado
-- [ ] `pages/customer-types/create.tsx` - Crear
-- [ ] `pages/customer-types/[id]/edit.tsx` - Editar
-- [ ] `components/customer-types/CustomerTypeForm.tsx`
+- [x] `pages/customer-types/index.tsx` - Listado
+- [x] `pages/customer-types/create.tsx` - Crear
+- [x] `pages/customer-types/[id]/edit.tsx` - Editar
+- [x] Formularios inline (sin componente separado)
 
 #### 4.3 Business Groups (Grupos Empresariales)
-- [ ] `pages/business-groups/index.tsx` - Listado
-- [ ] `pages/business-groups/create.tsx` - Crear
-- [ ] `pages/business-groups/[id]/edit.tsx` - Editar
-- [ ] `components/business-groups/BusinessGroupForm.tsx`
+- [x] `pages/business-groups/index.tsx` - Listado
+- [x] `pages/business-groups/create.tsx` - Crear
+- [x] `pages/business-groups/[id]/edit.tsx` - Editar
+- [x] Formularios inline (sin componente separado)
 
 #### 4.4 Products (Productos)
-- [ ] `pages/products/index.tsx` - Listado
-- [ ] `pages/products/create.tsx` - Crear
-- [ ] `pages/products/[id]/edit.tsx` - Editar
-- [ ] `components/products/ProductForm.tsx`
+- [x] `pages/products/index.tsx` - Listado
+- [x] `pages/products/create.tsx` - Crear
+- [x] `pages/products/[id]/edit.tsx` - Editar
+- [x] `components/products/ProductForm.tsx`
 
 #### 4.5 Inflation Rates (Tasas de Inflación)
-- [ ] `pages/settings/inflation-rates.tsx` - CRUD en una sola página
-  - [ ] Tabla editable inline
-  - [ ] Bulk edit para múltiples años
-  - [ ] Indicador de estimado vs real
+- [x] `pages/settings/inflation-rates.tsx` - CRUD en una sola página
+  - [x] Tabla editable inline
+  - [x] Add/edit/delete individual años
+  - [x] Indicador de estimado vs real
 
 **Entregables:**
-- CRUDs completos y funcionales
-- Validaciones integradas
-- UX consistente entre módulos
+- ✅ CRUDs completos y funcionales
+- ✅ Validaciones integradas con error display
+- ✅ UX consistente entre módulos
+- ✅ TypeScript con type safety completo
+- ✅ Wayfinder integration para routing
+- ✅ Hooks (useToast, useConfirm, useInertiaForm)
+- ✅ Dark mode support
+- ✅ Spanish UI
+- ✅ 20 archivos creados/modificados
+- ✅ 2999+ líneas de código
 
 ---
 
@@ -876,20 +884,20 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 ### Frontend
 - [x] **Fase 3.1:** Layouts y Navegación (8/8 tareas) ✅
-- [x] **Fase 3.2:** Componentes Base Reutilizables (0/8 tareas)
+- [x] **Fase 3.2:** Componentes Base Reutilizables (8/8 tareas) ✅
 - [x] **Fase 3.3:** Hooks Personalizados (3/3 tareas) ✅
 - [x] **Fase 3.4:** Utilidades (2/2 tareas) ✅
 
-- [ ] **Fase 4:** Maestros (0/20 tareas)
+- [x] **Fase 4:** Maestros (20/20 tareas) ✅
 - [ ] **Fase 5:** Escenarios (0/21 tareas)
 - [ ] **Fase 6:** Dashboard (0/24 tareas)
 - [ ] **Fase 7:** Importación (0/20 tareas)
 - [ ] **Fase 8:** Reportes Frontend (0/3 tareas)
 - [ ] **Fase 10:** Optimización Frontend (0/16 tareas)
 
-**Total Frontend:** 13/125 tareas (10.4%)
+**Total Frontend:** 41/125 tareas (32.8%)
 
-### **PROGRESO GLOBAL: 69/228 tareas (30.3%)**
+### **PROGRESO GLOBAL: 97/228 tareas (42.5%)**
 
 ---
 
@@ -991,6 +999,49 @@ Duración estimada: **4-5 semanas**
 ---
 
 ## Changelog
+
+### v1.5 (2025-11-14)
+- ✅ **FASE 4 COMPLETADA:** Frontend - Módulo de Maestros
+  - **Customers Module (4 pages + form component):**
+    - `pages/customers/index.tsx` - List with DataTable, filters (type, group, active), search
+    - `pages/customers/create.tsx` - Create form with validation
+    - `pages/customers/[id]/edit.tsx` - Edit form pre-populated
+    - `pages/customers/[id]/show.tsx` - Detail view with info cards, audit data
+    - `components/customers/CustomerForm.tsx` - Reusable form component
+  - **Customer Types Module (3 pages):**
+    - `pages/customer-types/index.tsx` - List with search and actions
+    - `pages/customer-types/create.tsx` - Inline create form
+    - `pages/customer-types/[id]/edit.tsx` - Inline edit form
+  - **Business Groups Module (3 pages):**
+    - `pages/business-groups/index.tsx` - List with search and actions
+    - `pages/business-groups/create.tsx` - Inline create form
+    - `pages/business-groups/[id]/edit.tsx` - Inline edit form
+  - **Products Module (3 pages + form component):**
+    - `pages/products/index.tsx` - List with price formatting and active filter
+    - `pages/products/create.tsx` - Create form with unit price
+    - `pages/products/[id]/edit.tsx` - Edit form pre-populated
+    - `components/products/ProductForm.tsx` - Reusable form component
+  - **Inflation Rates Module (1 page):**
+    - `pages/settings/inflation-rates.tsx` - Single page with inline editing
+    - Add/edit/delete rates directly in table
+    - Year validation and estimated/real status badges
+  - **TypeScript Types:**
+    - Added Customer, CustomerType, BusinessGroup, Product, InflationRate interfaces
+    - Added PaginatedData<T> generic type for Laravel pagination
+  - **UI Components:**
+    - `components/ui/textarea.tsx` - New textarea component
+  - **Key Features:**
+    - Full CRUD operations for all master data
+    - Wayfinder integration for type-safe routing
+    - useToast, useConfirm, useInertiaForm hooks usage
+    - Spanish UI throughout
+    - Dark mode support
+    - Form validation with error display
+    - Responsive design
+    - Delete confirmations
+  - **Files:** 20 files changed (11 new pages, 3 components, types, routes)
+  - **Code:** 2999+ lines added
+- Progreso global actualizado: 42.5% (97/228 tareas)
 
 ### v1.4 (2025-11-14)
 - ✅ **FASE 3.3 COMPLETADA:** Frontend - Hooks Personalizados
