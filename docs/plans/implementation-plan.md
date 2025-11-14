@@ -1,7 +1,7 @@
 # Plan de Implementación - Sistema de Proyección de Ingresos
 
 **Fecha de creación:** 2025-11-13
-**Versión:** 1.3
+**Versión:** 1.4
 **Estado:** En Progreso
 **Última Actualización:** 2025-11-14
 
@@ -38,7 +38,9 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - ✅ Fase 1 completada (Servicios de Cálculo)
 - ✅ Fase 2 completada (API Backend - Controladores y Rutas)
 - ✅ Fase 3.1 completada (Layouts y Navegación)
-- 🔄 Siguiente: Fase 3.2-3.4 (Componentes Base Reutilizables y Utilidades)
+- ✅ Fase 3.3 completada (Hooks Personalizados)
+- ✅ Fase 3.4 completada (Utilidades)
+- 🔄 Siguiente: Fase 3.2 (Componentes Base Reutilizables), luego Fase 4 (Módulo de Maestros)
 
 ---
 
@@ -297,19 +299,26 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - [ ] **`ConfirmDialog.tsx`** - Modal de confirmación
 - [ ] **`Toast.tsx`** - Sistema de notificaciones (integrar con Sonner)
 
-#### 3.3 Hooks Personalizados
-- [ ] **`useInertiaForm.ts`** - Wrapper para Inertia forms con Wayfinder
-- [ ] **`useConfirm.ts`** - Hook para confirmaciones
-- [ ] **`useToast.ts`** - Hook para notificaciones
+#### 3.3 Hooks Personalizados ✅
+- [x] **`useInertiaForm.ts`** - Wrapper para Inertia forms con Wayfinder
+- [x] **`useConfirm.ts`** - Hook para confirmaciones
+- [x] **`useToast.ts`** - Hook para notificaciones
 
-#### 3.4 Utilidades
-- [ ] **`formatters.ts`** - Funciones de formato
-  - [ ] `formatCurrency(amount, currency = 'MXN')`
-  - [ ] `formatPercentage(value, decimals = 2)`
-  - [ ] `formatDate(date, format = 'DD/MM/YYYY')`
+#### 3.4 Utilidades ✅
+- [x] **`formatters.ts`** - Funciones de formato
+  - [x] `formatCurrency(amount, currency = 'MXN')`
+  - [x] `formatPercentage(value, decimals = 2)`
+  - [x] `formatDate(date, format = 'DD/MM/YYYY')`
+  - [x] `formatDateTime(date, format)`
+  - [x] `formatNumber(value, decimals)`
+  - [x] `formatRelativeTime(date)`
+  - [x] `formatCompactCurrency(amount, currency)`
 
-- [ ] **`constants.ts`** - Constantes de la app
-  - [ ] Enums (status, calculation methods, etc.)
+- [x] **`constants.ts`** - Constantes de la app
+  - [x] Enums (status, calculation methods, adjustment types)
+  - [x] Labels y colores para UI
+  - [x] Configuraciones por defecto
+  - [x] Constantes de paginación y formatos
 
 **Entregables:**
 - Layout base funcional
@@ -867,7 +876,9 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 ### Frontend
 - [x] **Fase 3.1:** Layouts y Navegación (8/8 tareas) ✅
-- [ ] **Fase 3.2-3.4:** Componentes Base y Utilidades (0/9 tareas)
+- [ ] **Fase 3.2:** Componentes Base Reutilizables (0/8 tareas)
+- [x] **Fase 3.3:** Hooks Personalizados (3/3 tareas) ✅
+- [x] **Fase 3.4:** Utilidades (2/2 tareas) ✅
 - [ ] **Fase 4:** Maestros (0/20 tareas)
 - [ ] **Fase 5:** Escenarios (0/21 tareas)
 - [ ] **Fase 6:** Dashboard (0/24 tareas)
@@ -875,9 +886,9 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - [ ] **Fase 8:** Reportes Frontend (0/3 tareas)
 - [ ] **Fase 10:** Optimización Frontend (0/16 tareas)
 
-**Total Frontend:** 8/121 tareas (6.6%)
+**Total Frontend:** 13/125 tareas (10.4%)
 
-### **PROGRESO GLOBAL: 64/224 tareas (28.6%)**
+### **PROGRESO GLOBAL: 69/228 tareas (30.3%)**
 
 ---
 
@@ -979,6 +990,44 @@ Duración estimada: **4-5 semanas**
 ---
 
 ## Changelog
+
+### v1.4 (2025-11-14)
+- ✅ **FASE 3.3 COMPLETADA:** Frontend - Hooks Personalizados
+  - **Custom Hooks:**
+    - `useInertiaForm.ts` - Wrapper for Inertia forms with Wayfinder integration
+      - Supports route objects and URL strings
+      - Provides helper methods: submit, submitGet, submitPost, submitPut, submitPatch, submitDelete
+      - Configurable options: preserveScroll, preserveState, resetOnSuccess, callbacks
+    - `useConfirm.tsx` - Confirmation dialog hook
+      - Returns Promise<boolean> for easy async/await usage
+      - Customizable title, description, button text and variants
+      - Built on top of existing Dialog component
+    - `useToast.tsx` - Toast notification system with provider
+      - Support for success, error, info, warning types
+      - Auto-dismiss with configurable duration
+      - Portal-based rendering
+      - Full dark mode support
+- ✅ **FASE 3.4 COMPLETADA:** Frontend - Utilidades
+  - **Formatting Utilities (formatters.ts):**
+    - `formatCurrency()` - Format numbers as currency with locale support
+    - `formatCompactCurrency()` - Compact currency (1.2K, 1.2M, etc.)
+    - `formatPercentage()` - Format decimals as percentages
+    - `formatDate()` - Date formatting with presets and custom formats
+    - `formatDateTime()` - Date and time formatting
+    - `formatNumber()` - Number formatting with thousand separators
+    - `formatRelativeTime()` - Relative time (e.g., "hace 2 horas")
+  - **Application Constants (constants.ts):**
+    - Scenario enums: SCENARIO_STATUS, CALCULATION_METHOD
+    - Invoice enums: INVOICE_STATUS
+    - Assumption enums: ADJUSTMENT_TYPE
+    - Currency constants: CURRENCIES, symbols, labels
+    - Month names (Spanish)
+    - Default values: pagination, historical months, projection years
+    - Chart colors and palettes
+    - File upload limits and allowed types
+    - Date format patterns
+    - Display labels and colors for all enums
+- Progreso global actualizado: 30.3% (69/228 tareas)
 
 ### v1.3 (2025-11-14)
 - ✅ **FASE 3.1 COMPLETADA:** Frontend - Layouts y Navegación

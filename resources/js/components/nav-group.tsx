@@ -9,9 +9,6 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { resolveUrl } from '@/lib/utils';
 import { type NavGroup as NavGroupType } from '@/types';
