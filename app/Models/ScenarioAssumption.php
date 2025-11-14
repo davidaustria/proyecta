@@ -21,6 +21,7 @@ class ScenarioAssumption extends Model
         'inflation_rate',
         'adjustment_type',
         'fixed_amount',
+        'seasonality_factors',
         'notes',
     ];
 
@@ -31,6 +32,7 @@ class ScenarioAssumption extends Model
             'growth_rate' => 'decimal:2',
             'inflation_rate' => 'decimal:2',
             'fixed_amount' => 'decimal:2',
+            'seasonality_factors' => 'array',
         ];
     }
 
