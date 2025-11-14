@@ -1,7 +1,7 @@
 # Plan de Implementación - Sistema de Proyección de Ingresos
 
 **Fecha de creación:** 2025-11-13
-**Versión:** 1.2
+**Versión:** 1.3
 **Estado:** En Progreso
 **Última Actualización:** 2025-11-14
 
@@ -37,7 +37,8 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 **Estado Actual (2025-11-14):**
 - ✅ Fase 1 completada (Servicios de Cálculo)
 - ✅ Fase 2 completada (API Backend - Controladores y Rutas)
-- 🔄 Siguiente: Fase 3 (Frontend - Infraestructura y Layouts)
+- ✅ Fase 3.1 completada (Layouts y Navegación)
+- 🔄 Siguiente: Fase 3.2-3.4 (Componentes Base Reutilizables y Utilidades)
 
 ---
 
@@ -248,25 +249,25 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 ---
 
-### **FASE 3: Frontend - Infraestructura y Layouts** ⏳
+### **FASE 3: Frontend - Infraestructura y Layouts** 🔄
 **Duración:** 0.5 semanas
 **Objetivo:** Crear la estructura base del frontend
 
-#### 3.1 Layouts y Navegación
-- [ ] **`DashboardLayout.tsx`** - Layout principal
-  - [ ] Sidebar colapsable
-  - [ ] Header con breadcrumbs
-  - [ ] Footer
-  - [ ] Contenedor de contenido con max-width
+#### 3.1 Layouts y Navegación ✅
+- [x] **`DashboardLayout.tsx`** - Layout principal (ya existía como `app-sidebar-layout.tsx`)
+  - [x] Sidebar colapsable
+  - [x] Header con breadcrumbs
+  - [x] Footer
+  - [x] Contenedor de contenido con max-width
 
-- [ ] **`Sidebar.tsx`** - Navegación principal
-  - [ ] Sección "Dashboard"
-  - [ ] Sección "Escenarios"
-  - [ ] Sección "Datos Maestros" (Customers, Types, Groups, Products)
-  - [ ] Sección "Importación"
-  - [ ] Sección "Configuración" (Inflation Rates)
-  - [ ] Active state con Wayfinder
-  - [ ] Icons con lucide-react
+- [x] **`Sidebar.tsx`** - Navegación principal (actualizado `app-sidebar.tsx`)
+  - [x] Sección "Dashboard"
+  - [x] Sección "Escenarios"
+  - [x] Sección "Datos Maestros" (Customers, Types, Groups, Products)
+  - [x] Sección "Importación"
+  - [x] Sección "Configuración" (Inflation Rates)
+  - [x] Active state con Wayfinder
+  - [x] Icons con lucide-react
 
 #### 3.2 Componentes Base Reutilizables
 - [ ] **`DataTable.tsx`** - Tabla genérica
@@ -865,7 +866,8 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 **Total Backend:** 56/103 tareas (54.4%)
 
 ### Frontend
-- [ ] **Fase 3:** Infraestructura (0/17 tareas)
+- [x] **Fase 3.1:** Layouts y Navegación (8/8 tareas) ✅
+- [ ] **Fase 3.2-3.4:** Componentes Base y Utilidades (0/9 tareas)
 - [ ] **Fase 4:** Maestros (0/20 tareas)
 - [ ] **Fase 5:** Escenarios (0/21 tareas)
 - [ ] **Fase 6:** Dashboard (0/24 tareas)
@@ -873,9 +875,9 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - [ ] **Fase 8:** Reportes Frontend (0/3 tareas)
 - [ ] **Fase 10:** Optimización Frontend (0/16 tareas)
 
-**Total Frontend:** 0/121 tareas (0%)
+**Total Frontend:** 8/121 tareas (6.6%)
 
-### **PROGRESO GLOBAL: 56/224 tareas (25.0%)**
+### **PROGRESO GLOBAL: 64/224 tareas (28.6%)**
 
 ---
 
@@ -977,6 +979,28 @@ Duración estimada: **4-5 semanas**
 ---
 
 ## Changelog
+
+### v1.3 (2025-11-14)
+- ✅ **FASE 3.1 COMPLETADA:** Frontend - Layouts y Navegación
+  - **Componentes de Navegación:**
+    - NavGroup component para grupos de navegación colapsables
+    - Actualizado app-sidebar.tsx con todas las secciones de navegación
+  - **Estructura de Navegación:**
+    - Sección "Dashboard" (existente)
+    - Sección "Escenarios" (nueva)
+    - Sección "Datos Maestros" con grupo colapsable (Clientes, Tipos de Cliente, Grupos Empresariales, Productos)
+    - Sección "Importación" (nueva)
+    - Sección "Configuración" con grupo colapsable (Tasas de Inflación)
+  - **Rutas Web:**
+    - 7 nuevas rutas placeholder para navegación
+    - Páginas index creadas para: scenarios, customers, customer-types, business-groups, products, import, inflation-rates
+  - **Características:**
+    - Navegación con estados activos usando Wayfinder
+    - Iconos de lucide-react
+    - Sidebar colapsable (ya existía en app-sidebar-layout.tsx)
+    - Breadcrumbs en todas las páginas
+    - Dark mode support
+- Progreso global actualizado: 28.6% (64/224 tareas)
 
 ### v1.2 (2025-11-14)
 - ✅ **FASE 2 COMPLETADA:** API Backend - Controladores y Rutas
