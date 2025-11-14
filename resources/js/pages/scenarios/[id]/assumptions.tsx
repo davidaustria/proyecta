@@ -2,6 +2,7 @@ import type {
     AssumptionFormData,
 } from '@/components/scenarios/AssumptionForm';
 import { AssumptionForm } from '@/components/scenarios/AssumptionForm';
+import { CalculateProjectionsButton } from '@/components/scenarios/CalculateProjectionsButton';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -224,10 +225,19 @@ export default function ScenarioAssumptions({
                 title={`Supuestos: ${scenario.name}`}
                 subtitle="Gestiona los supuestos de proyección para cada año"
                 actions={
-                    <Button onClick={handleCreate}>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Nuevo Supuesto
-                    </Button>
+                    <div className="flex gap-2">
+                        <CalculateProjectionsButton
+                            scenario={scenario}
+                            variant="outline"
+                            onCalculationComplete={() => {
+                                router.reload({ only: ['scenario'] });
+                            }}
+                        />
+                        <Button onClick={handleCreate}>
+                            <Plus className="mr-2 h-4 w-4" />
+                            Nuevo Supuesto
+                        </Button>
+                    </div>
                 }
             />
 
