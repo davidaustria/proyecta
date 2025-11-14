@@ -1,7 +1,7 @@
 # Plan de Implementación - Sistema de Proyección de Ingresos
 
 **Fecha de creación:** 2025-11-13
-**Versión:** 1.6
+**Versión:** 1.7
 **Estado:** En Progreso
 **Última Actualización:** 2025-11-14
 
@@ -39,9 +39,9 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - ✅ Fase 2 completada (API Backend - Controladores y Rutas)
 - ✅ Fase 3 completada (Infraestructura Frontend - Layouts, Componentes, Hooks, Utilidades)
 - ✅ Fase 4 completada (Módulo de Maestros - Customers, Types, Groups, Products, Inflation Rates)
-- ✅ Fase 5.1, 5.2, 5.3 completadas (Escenarios: Listado, Crear/Editar, Supuestos) - Path crítico del MVP
+- ✅ Fase 5 completada (Escenarios: Listado, Crear/Editar, Supuestos, Cálculo, Duplicar) - Path crítico del MVP
 - 🔄 Siguiente: Fase 6 (Dashboard de Proyecciones)
-- 📊 Progreso: 51.8% (118/228 tareas completadas)
+- 📊 Progreso: 52.6% (120/228 tareas completadas)
 
 ---
 
@@ -441,19 +441,19 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
   - [x] Validación: suma debe ser ≈ 12.0 (promedio = 1.0)
   - [x] Presets: uniforme (1.0 todos), Q4 Alto, Q1 Alto
 
-#### 5.4 Cálculo de Proyecciones
-- [ ] `components/scenarios/CalculateProjectionsButton.tsx` - Botón con modal
-  - [ ] Modal de confirmación
-  - [ ] Mostrar advertencia si hay proyecciones existentes (se borrarán)
-  - [ ] Progress indicator (sincrónico con loading state)
-  - [ ] Notificación de éxito con resumen (X proyecciones creadas)
-  - [ ] Error handling con detalles
+#### 5.4 Cálculo de Proyecciones ✅
+- [x] `components/scenarios/CalculateProjectionsButton.tsx` - Botón con modal
+  - [x] Modal de confirmación
+  - [x] Mostrar advertencia si hay proyecciones existentes (se borrarán)
+  - [x] Progress indicator (sincrónico con loading state)
+  - [x] Notificación de éxito con resumen (X proyecciones creadas)
+  - [x] Error handling con detalles
 
-#### 5.5 Duplicar Escenario
-- [ ] Modal de duplicación
-  - [ ] Input para nuevo nombre
-  - [ ] Checkbox: copiar supuestos (default: true)
-  - [ ] Checkbox: copiar proyecciones (default: false)
+#### 5.5 Duplicar Escenario ✅
+- [x] `components/scenarios/DuplicateScenarioDialog.tsx` - Modal de duplicación
+  - [x] Input para nuevo nombre
+  - [x] Checkbox: copiar supuestos (default: true)
+  - [x] Checkbox: copiar proyecciones (default: false)
 
 **Entregables:**
 - Wizard de creación de escenarios funcional
@@ -889,15 +889,15 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 - [x] **Fase 4:** Maestros (20/20 tareas) ✅
 - [x] **Fase 5.1, 5.2, 5.3:** Escenarios - Listado, Crear/Editar, Supuestos (21/21 tareas) ✅
-- [ ] **Fase 5.4, 5.5:** Escenarios - Cálculo y Duplicar (0/0 tareas, ya implementado en backend)
+- [x] **Fase 5.4, 5.5:** Escenarios - Cálculo y Duplicar (2/2 tareas) ✅
 - [ ] **Fase 6:** Dashboard (0/24 tareas)
 - [ ] **Fase 7:** Importación (0/20 tareas)
 - [ ] **Fase 8:** Reportes Frontend (0/3 tareas)
 - [ ] **Fase 10:** Optimización Frontend (0/16 tareas)
 
-**Total Frontend:** 62/125 tareas (49.6%)
+**Total Frontend:** 64/127 tareas (50.4%)
 
-### **PROGRESO GLOBAL: 118/228 tareas (51.8%)**
+### **PROGRESO GLOBAL: 120/230 tareas (52.2%)**
 
 ---
 
@@ -999,6 +999,40 @@ Duración estimada: **4-5 semanas**
 ---
 
 ## Changelog
+
+### v1.7 (2025-11-14)
+- ✅ **FASE 5.4 COMPLETADA:** Frontend - Cálculo de Proyecciones
+  - **Componente CalculateProjectionsButton (`components/scenarios/CalculateProjectionsButton.tsx`):**
+    - Botón con modal de confirmación
+    - Muestra advertencia si hay proyecciones existentes que se eliminarán
+    - Progress indicator sincrónico con loading state
+    - Notificación de éxito con resumen de proyecciones creadas
+    - Error handling detallado con mensajes amigables
+    - Muestra configuración del escenario antes de calcular
+    - Integrado en página de supuestos (assumptions.tsx)
+- ✅ **FASE 5.5 COMPLETADA:** Frontend - Duplicar Escenario
+  - **Componente DuplicateScenarioDialog (`components/scenarios/DuplicateScenarioDialog.tsx`):**
+    - Modal de duplicación completo con formulario
+    - Input para nombre del nuevo escenario con validación
+    - Checkbox para copiar supuestos (default: true)
+    - Checkbox para copiar proyecciones (default: false)
+    - Muestra información del escenario original
+    - Validación de nombre único
+    - Error handling con mensajes específicos
+    - Integrado en página de listado de escenarios
+  - **Integración:**
+    - Updated scenarios index page to use DuplicateScenarioDialog
+    - Removed old confirm-based duplication logic
+    - Added state management for dialog control
+- **Features:**
+  - TypeScript type safety completo
+  - API endpoints corregidos (/api/v1/scenarios/{id}/calculate y /api/v1/scenarios/{id}/duplicate)
+  - Toast notifications para feedback
+  - Dark mode support
+  - Spanish UI
+  - Controlled/uncontrolled dialog modes
+  - Auto-reload on completion
+- Progreso global actualizado: 52.2% (120/230 tareas completadas)
 
 ### v1.6 (2025-11-14)
 - ✅ **FASE 5.1 COMPLETADA:** Frontend - Listado de Escenarios
@@ -1265,5 +1299,5 @@ Duración estimada: **4-5 semanas**
 ---
 
 **Documento mantenido por:** Equipo de Desarrollo
-**Última actualización:** 2025-11-14 (v1.6)
+**Última actualización:** 2025-11-14 (v1.7)
 **Próxima revisión:** Al completar cada fase

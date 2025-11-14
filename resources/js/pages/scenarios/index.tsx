@@ -1,3 +1,4 @@
+import { DuplicateScenarioDialog } from '@/components/scenarios/DuplicateScenarioDialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
@@ -62,6 +63,8 @@ export default function ScenariosIndex({
         filters.baseline || 'all',
     );
     const [userFilter, setUserFilter] = useState(filters.user || 'all');
+    const [duplicatingScenario, setDuplicatingScenario] =
+        useState<Scenario | null>(null);
     const { confirm, ConfirmDialog } = useConfirm();
     const toast = useToast();
 
@@ -82,34 +85,8 @@ export default function ScenariosIndex({
         );
     };
 
-    const handleDuplicate = async (scenario: Scenario) => {
-        const confirmed = await confirm({
-            title: '¿Duplicar escenario?',
-            description: `¿Deseas crear una copia de "${scenario.name}"? Se copiarán todos los supuestos pero no las proyecciones calculadas.`,
-            confirmText: 'Duplicar',
-        });
-
-        if (confirmed) {
-            router.post(
-                `/api/v1/scenarios/${scenario.id}/duplicate`,
-                {},
-                {
-                    onSuccess: () => {
-                        toast.success(
-                            'El escenario ha sido duplicado exitosamente.',
-                            {
-                                title: 'Escenario duplicado',
-                            },
-                        );
-                    },
-                    onError: () => {
-                        toast.error('No se pudo duplicar el escenario.', {
-                            title: 'Error',
-                        });
-                    },
-                },
-            );
-        }
+    const handleDuplicate = (scenario: Scenario) => {
+        setDuplicatingScenario(scenario);
     };
 
     const handleCalculate = async (scenario: Scenario) => {
@@ -416,6 +393,19 @@ export default function ScenariosIndex({
             </div>
 
             <ConfirmDialog />
+
+            {duplicatingScenario && (
+                <DuplicateScenarioDialog
+                    scenario={duplicatingScenario}
+                    open={true}
+                    onOpenChange={(open) => {
+                        if (!open) setDuplicatingScenario(null);
+                    }}
+                    onDuplicationComplete={() => {
+                        router.reload({ only: ['scenarios'] });
+                    }}
+                />
+            )}
         </AppSidebarLayout>
     );
 }
