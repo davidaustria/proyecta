@@ -97,6 +97,27 @@ export interface InflationRate {
     updated_at: string;
 }
 
+export interface Scenario {
+    id: number;
+    name: string;
+    description?: string;
+    base_year: number;
+    historical_months: number;
+    projection_years: number;
+    status: 'draft' | 'active' | 'archived';
+    is_baseline: boolean;
+    calculation_method: 'simple_average' | 'weighted_average' | 'trend';
+    include_inflation: boolean;
+    created_at: string;
+    updated_at: string;
+    user: {
+        id: number;
+        name?: string;
+    };
+    assumptions_count?: number;
+    projections_count?: number;
+}
+
 // Pagination
 export interface PaginatedData<T> {
     data: T[];

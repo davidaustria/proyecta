@@ -18,7 +18,45 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Scenarios
     Route::get('scenarios', function () {
-        return Inertia::render('scenarios/index');
+        $query = \App\Models\Scenario::query()
+            ->with('user')
+            ->withCount(['assumptions', 'projections'])
+            ->orderBy('created_at', 'desc');
+
+        // Search filter
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Status filter
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        // Baseline filter
+        if (request('baseline') !== null && request('baseline') !== 'all') {
+            $query->where('is_baseline', request('baseline'));
+        }
+
+        // User filter
+        if (request('user')) {
+            $query->where('user_id', request('user'));
+        }
+
+        return Inertia::render('scenarios/index', [
+            'scenarios' => $query->paginate(15),
+            'users' => \App\Models\User::orderBy('name')->get(['id', 'name']),
+            'filters' => [
+                'search' => request('search'),
+                'status' => request('status'),
+                'baseline' => request('baseline'),
+                'user' => request('user'),
+            ],
+        ]);
     })->name('web.scenarios.index');
 
     // Master Data
