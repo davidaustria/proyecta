@@ -69,6 +69,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('web.scenarios.edit');
 
+    Route::get('scenarios/{scenario}/assumptions', function (\App\Models\Scenario $scenario) {
+        $assumptions = $scenario->assumptions()
+            ->with(['customerType', 'businessGroup', 'customer', 'product'])
+            ->orderBy('year')
+            ->orderBy('hierarchy_level')
+            ->get();
+
+        return Inertia::render('scenarios/[id]/assumptions', [
+            'scenario' => $scenario,
+            'assumptions' => $assumptions,
+            'customerTypes' => \App\Models\CustomerType::orderBy('name')->get(),
+            'businessGroups' => \App\Models\BusinessGroup::orderBy('name')->get(),
+            'customers' => \App\Models\Customer::where('is_active', true)->orderBy('name')->get(['id', 'name', 'code']),
+            'products' => \App\Models\Product::where('is_active', true)->orderBy('name')->get(['id', 'name', 'code']),
+        ]);
+    })->name('web.scenarios.assumptions');
+
     // Master Data
     Route::get('customers', function () {
         $query = \App\Models\Customer::query()

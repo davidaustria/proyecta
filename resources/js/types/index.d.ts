@@ -118,6 +118,29 @@ export interface Scenario {
     projections_count?: number;
 }
 
+export interface ScenarioAssumption {
+    id: number;
+    scenario_id: number;
+    year: number;
+    growth_rate?: number;
+    inflation_rate?: number;
+    adjustment_type: 'percentage' | 'fixed_amount';
+    fixed_amount?: number;
+    seasonality_factors?: number[];
+    notes?: string;
+    created_at: string;
+    updated_at: string;
+    business_group_id?: number;
+    customer_type_id?: number;
+    customer_id?: number;
+    product_id?: number;
+    business_group?: BusinessGroup;
+    customer_type?: CustomerType;
+    customer?: Customer;
+    product?: Product;
+    hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';
+}
+
 // Pagination
 export interface PaginatedData<T> {
     data: T[];
