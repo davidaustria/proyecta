@@ -23,7 +23,46 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Master Data
     Route::get('customers', function () {
-        return Inertia::render('customers/index');
+        $query = \App\Models\Customer::query()
+            ->with(['customerType', 'businessGroup'])
+            ->orderBy('name');
+
+        // Search filter
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('tax_id', 'like', "%{$search}%");
+            });
+        }
+
+        // Type filter
+        if (request('type')) {
+            $query->where('customer_type_id', request('type'));
+        }
+
+        // Business group filter
+        if (request('group')) {
+            $query->where('business_group_id', request('group'));
+        }
+
+        // Active status filter
+        if (request('active') !== null && request('active') !== 'all') {
+            $query->where('is_active', request('active'));
+        }
+
+        return Inertia::render('customers/index', [
+            'customers' => $query->paginate(15),
+            'customerTypes' => \App\Models\CustomerType::orderBy('name')->get(),
+            'businessGroups' => \App\Models\BusinessGroup::orderBy('name')->get(),
+            'filters' => [
+                'search' => request('search'),
+                'type' => request('type'),
+                'group' => request('group'),
+                'active' => request('active'),
+            ],
+        ]);
     })->name('web.customers.index');
 
     Route::get('customer-types', function () {
@@ -56,11 +95,46 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('web.customer-types.edit');
 
     Route::get('business-groups', function () {
-        return Inertia::render('business-groups/index');
+        $query = \App\Models\BusinessGroup::query()->orderBy('name');
+
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
+            });
+        }
+
+        return Inertia::render('business-groups/index', [
+            'businessGroups' => $query->paginate(15),
+            'filters' => [
+                'search' => request('search'),
+            ],
+        ]);
     })->name('web.business-groups.index');
 
     Route::get('products', function () {
-        return Inertia::render('products/index');
+        $query = \App\Models\Product::query()->orderBy('name');
+
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
+            });
+        }
+
+        if (request('active') !== null && request('active') !== 'all') {
+            $query->where('is_active', request('active'));
+        }
+
+        return Inertia::render('products/index', [
+            'products' => $query->paginate(15),
+            'filters' => [
+                'search' => request('search'),
+                'active' => request('active'),
+            ],
+        ]);
     })->name('web.products.index');
 
     // Import

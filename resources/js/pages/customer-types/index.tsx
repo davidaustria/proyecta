@@ -73,7 +73,7 @@ export default function CustomerTypesIndex({ customerTypes, filters }: Props) {
             key: 'code',
             label: 'Código',
             sortable: true,
-            render: (customerType: CustomerType) => (
+            render: (_value: unknown, customerType: CustomerType) => (
                 <span className="font-mono text-sm">{customerType.code}</span>
             ),
         },
@@ -85,7 +85,7 @@ export default function CustomerTypesIndex({ customerTypes, filters }: Props) {
         {
             key: 'description',
             label: 'Descripción',
-            render: (customerType: CustomerType) => (
+            render: (_value: unknown, customerType: CustomerType) => (
                 <span className="text-sm text-muted-foreground">
                     {customerType.description || '-'}
                 </span>
@@ -94,7 +94,7 @@ export default function CustomerTypesIndex({ customerTypes, filters }: Props) {
         {
             key: 'actions',
             label: '',
-            render: (customerType: CustomerType) => (
+            render: (_value: unknown, customerType: CustomerType) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm">

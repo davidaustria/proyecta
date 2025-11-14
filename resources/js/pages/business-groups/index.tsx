@@ -76,7 +76,7 @@ export default function BusinessGroupsIndex({
             key: 'code',
             label: 'Código',
             sortable: true,
-            render: (businessGroup: BusinessGroup) => (
+            render: (_value: unknown, businessGroup: BusinessGroup) => (
                 <span className="font-mono text-sm">{businessGroup.code}</span>
             ),
         },
@@ -88,7 +88,7 @@ export default function BusinessGroupsIndex({
         {
             key: 'description',
             label: 'Descripción',
-            render: (businessGroup: BusinessGroup) => (
+            render: (_value: unknown, businessGroup: BusinessGroup) => (
                 <span className="text-sm text-muted-foreground">
                     {businessGroup.description || '-'}
                 </span>
@@ -97,7 +97,7 @@ export default function BusinessGroupsIndex({
         {
             key: 'actions',
             label: '',
-            render: (businessGroup: BusinessGroup) => (
+            render: (_value: unknown, businessGroup: BusinessGroup) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm">

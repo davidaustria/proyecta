@@ -95,7 +95,7 @@ export default function ProductsIndex({ products, filters }: Props) {
             key: 'code',
             label: 'Código',
             sortable: true,
-            render: (product: Product) => (
+            render: (_value: unknown, product: Product) => (
                 <span className="font-mono text-sm">{product.code}</span>
             ),
         },
@@ -108,7 +108,7 @@ export default function ProductsIndex({ products, filters }: Props) {
             key: 'unit_price',
             label: 'Precio Unitario',
             sortable: true,
-            render: (product: Product) => (
+            render: (_value: unknown, product: Product) => (
                 <span className="font-mono">
                     {product.unit_price
                         ? formatCurrency(product.unit_price)
@@ -119,7 +119,7 @@ export default function ProductsIndex({ products, filters }: Props) {
         {
             key: 'is_active',
             label: 'Estado',
-            render: (product: Product) => (
+            render: (_value: unknown, product: Product) => (
                 <Badge variant={product.is_active ? 'default' : 'secondary'}>
                     {product.is_active ? 'Activo' : 'Inactivo'}
                 </Badge>
@@ -128,7 +128,7 @@ export default function ProductsIndex({ products, filters }: Props) {
         {
             key: 'actions',
             label: '',
-            render: (product: Product) => (
+            render: (_value: unknown, product: Product) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm">

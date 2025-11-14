@@ -104,7 +104,7 @@ export default function CustomersIndex({
             key: 'code',
             label: 'Código',
             sortable: true,
-            render: (customer: Customer) => (
+            render: (_value: unknown, customer: Customer) => (
                 <span className="font-mono text-sm">{customer.code}</span>
             ),
         },
@@ -116,7 +116,7 @@ export default function CustomersIndex({
         {
             key: 'tax_id',
             label: 'RFC',
-            render: (customer: Customer) => (
+            render: (_value: unknown, customer: Customer) => (
                 <span className="font-mono text-sm">
                     {customer.tax_id || '-'}
                 </span>
@@ -125,7 +125,7 @@ export default function CustomersIndex({
         {
             key: 'customer_type',
             label: 'Tipo',
-            render: (customer: Customer) => (
+            render: (_value: unknown, customer: Customer) => (
                 <span className="text-sm">
                     {customer.customer_type?.name || '-'}
                 </span>
@@ -134,7 +134,7 @@ export default function CustomersIndex({
         {
             key: 'business_group',
             label: 'Grupo Empresarial',
-            render: (customer: Customer) => (
+            render: (_value: unknown, customer: Customer) => (
                 <span className="text-sm">
                     {customer.business_group?.name || '-'}
                 </span>
@@ -143,7 +143,7 @@ export default function CustomersIndex({
         {
             key: 'is_active',
             label: 'Estado',
-            render: (customer: Customer) => (
+            render: (_value: unknown, customer: Customer) => (
                 <Badge variant={customer.is_active ? 'default' : 'secondary'}>
                     {customer.is_active ? 'Activo' : 'Inactivo'}
                 </Badge>
@@ -152,7 +152,7 @@ export default function CustomersIndex({
         {
             key: 'actions',
             label: '',
-            render: (customer: Customer) => (
+            render: (_value: unknown, customer: Customer) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm">
