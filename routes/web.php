@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CustomerType;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -26,8 +27,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('customers.index');
 
     Route::get('customer-types', function () {
-        return Inertia::render('customer-types/index');
+        $query = CustomerType::query()->orderBy('name');
+
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
+            });
+        }
+
+        return Inertia::render('customer-types/index', [
+            'customerTypes' => $query->paginate(15),
+            'filters' => [
+                'search' => request('search'),
+            ],
+        ]);
     })->name('customer-types.index');
+
+    Route::get('customer-types/create', function () {
+        return Inertia::render('customer-types/create');
+    })->name('customer-types.create');
+
+    Route::get('customer-types/{customerType}/edit', function (CustomerType $customerType) {
+        return Inertia::render('customer-types/[id]/edit', [
+            'customerType' => $customerType,
+        ]);
+    })->name('customer-types.edit');
 
     Route::get('business-groups', function () {
         return Inertia::render('business-groups/index');
@@ -43,9 +69,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('import.index');
 
     // Configuration
-    Route::get('inflation-rates', function () {
-        return Inertia::render('inflation-rates/index');
+    Route::get('settings/inflation-rates', function () {
+        $inflationRates = \App\Models\InflationRate::orderBy('year', 'desc')->get();
+
+        return Inertia::render('settings/inflation-rates', [
+            'inflationRates' => $inflationRates,
+        ]);
     })->name('inflation-rates.index');
+
+    // Inflation Rates Management (Session-authenticated endpoints for Inertia)
+    Route::post('api/inflation-rates', [\App\Http\Controllers\InflationRateController::class, 'store']);
+    Route::delete('api/inflation-rates/{year}', [\App\Http\Controllers\InflationRateController::class, 'destroy']);
 });
 
 require __DIR__.'/settings.php';
