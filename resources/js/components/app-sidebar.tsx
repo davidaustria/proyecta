@@ -67,20 +67,28 @@ const masterDataGroup: NavGroupType = {
     ],
 };
 
-const otherNavItems: NavItem[] = [
-    {
-        title: 'Importación',
-        href: '/import',
-        icon: Upload,
-    },
-];
+const importGroup: NavGroupType = {
+    title: 'Importación',
+    items: [
+        {
+            title: 'Importar Facturas',
+            href: '/import/invoices',
+            icon: Upload,
+        },
+        {
+            title: 'Historial',
+            href: '/import/history',
+            icon: Folder,
+        },
+    ],
+};
 
 const configurationGroup: NavGroupType = {
     title: 'Configuración',
     items: [
         {
             title: 'Tasas de Inflación',
-            href: '/inflation-rates',
+            href: '/settings/inflation-rates',
             icon: LineChart,
         },
     ],
@@ -117,7 +125,7 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} />
                 <NavGroup groups={[masterDataGroup]} />
-                <NavMain items={otherNavItems} />
+                <NavGroup groups={[importGroup]} />
                 <NavGroup groups={[configurationGroup]} />
             </SidebarContent>
 

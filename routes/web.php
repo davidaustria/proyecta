@@ -203,9 +203,47 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('web.products.index');
 
     // Import
-    Route::get('import', function () {
-        return Inertia::render('import/index');
-    })->name('import.index');
+    Route::get('import/invoices', function () {
+        return Inertia::render('import/invoices');
+    })->name('import.invoices');
+
+    Route::get('import/history', function () {
+        $query = \App\Models\ImportBatch::query()
+            ->with('user')
+            ->orderBy('imported_at', 'desc');
+
+        // Search filter
+        if (request('search')) {
+            $search = request('search');
+            $query->where('filename', 'like', "%{$search}%");
+        }
+
+        // Status filter
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        return Inertia::render('import/history', [
+            'batches' => $query->paginate(15),
+            'filters' => [
+                'search' => request('search'),
+                'status' => request('status'),
+            ],
+        ]);
+    })->name('import.history');
+
+    Route::get('import/history/{batch}', function (\App\Models\ImportBatch $batch) {
+        $invoices = \App\Models\Invoice::query()
+            ->where('import_batch_id', $batch->id)
+            ->with('customer')
+            ->orderBy('invoice_date', 'desc')
+            ->paginate(20);
+
+        return Inertia::render('import/history/[id]/show', [
+            'batch' => $batch->load('user'),
+            'invoices' => $invoices,
+        ]);
+    })->name('import.history.show');
 
     // Configuration
     Route::get('settings/inflation-rates', function () {
