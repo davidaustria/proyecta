@@ -275,10 +275,12 @@ export default function ScenarioCompare({
                                     Escenario 3
                                 </label>
                                 <Select
-                                    value={scenario3?.toString()}
+                                    value={scenario3?.toString() || 'none'}
                                     onValueChange={(value) =>
                                         setScenario3(
-                                            value ? Number(value) : undefined,
+                                            value === 'none'
+                                                ? undefined
+                                                : Number(value),
                                         )
                                     }
                                 >
@@ -286,7 +288,7 @@ export default function ScenarioCompare({
                                         <SelectValue placeholder="Opcional" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="">
+                                        <SelectItem value="none">
                                             Ninguno
                                         </SelectItem>
                                         {scenarios.map((s) => (
@@ -306,10 +308,12 @@ export default function ScenarioCompare({
                                     Escenario 4
                                 </label>
                                 <Select
-                                    value={scenario4?.toString()}
+                                    value={scenario4?.toString() || 'none'}
                                     onValueChange={(value) =>
                                         setScenario4(
-                                            value ? Number(value) : undefined,
+                                            value === 'none'
+                                                ? undefined
+                                                : Number(value),
                                         )
                                     }
                                 >
@@ -317,7 +321,7 @@ export default function ScenarioCompare({
                                         <SelectValue placeholder="Opcional" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="">
+                                        <SelectItem value="none">
                                             Ninguno
                                         </SelectItem>
                                         {scenarios.map((s) => (
@@ -340,10 +344,12 @@ export default function ScenarioCompare({
                                     Año
                                 </label>
                                 <Select
-                                    value={year?.toString()}
+                                    value={year?.toString() || 'all'}
                                     onValueChange={(value) =>
                                         setYear(
-                                            value ? Number(value) : undefined,
+                                            value === 'all'
+                                                ? undefined
+                                                : Number(value),
                                         )
                                     }
                                 >
@@ -351,7 +357,9 @@ export default function ScenarioCompare({
                                         <SelectValue placeholder="Todos los años" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="">Todos</SelectItem>
+                                        <SelectItem value="all">
+                                            Todos
+                                        </SelectItem>
                                         {availableYears.map((y) => (
                                             <SelectItem
                                                 key={y}
@@ -369,10 +377,12 @@ export default function ScenarioCompare({
                                     Tipo de Cliente
                                 </label>
                                 <Select
-                                    value={customerTypeId?.toString()}
+                                    value={customerTypeId?.toString() || 'all'}
                                     onValueChange={(value) =>
                                         setCustomerTypeId(
-                                            value ? Number(value) : undefined,
+                                            value === 'all'
+                                                ? undefined
+                                                : Number(value),
                                         )
                                     }
                                 >
@@ -380,7 +390,9 @@ export default function ScenarioCompare({
                                         <SelectValue placeholder="Todos" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="">Todos</SelectItem>
+                                        <SelectItem value="all">
+                                            Todos
+                                        </SelectItem>
                                         {customerTypes.map((type) => (
                                             <SelectItem
                                                 key={type.id}
@@ -398,10 +410,12 @@ export default function ScenarioCompare({
                                     Grupo Empresarial
                                 </label>
                                 <Select
-                                    value={businessGroupId?.toString()}
+                                    value={businessGroupId?.toString() || 'all'}
                                     onValueChange={(value) =>
                                         setBusinessGroupId(
-                                            value ? Number(value) : undefined,
+                                            value === 'all'
+                                                ? undefined
+                                                : Number(value),
                                         )
                                     }
                                 >
@@ -409,7 +423,9 @@ export default function ScenarioCompare({
                                         <SelectValue placeholder="Todos" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="">Todos</SelectItem>
+                                        <SelectItem value="all">
+                                            Todos
+                                        </SelectItem>
                                         {businessGroups.map((group) => (
                                             <SelectItem
                                                 key={group.id}
