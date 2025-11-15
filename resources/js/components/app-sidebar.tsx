@@ -17,6 +17,7 @@ import { Link } from '@inertiajs/react';
 import {
     BookOpen,
     Building2,
+    FileText,
     Folder,
     FolderKanban,
     Gauge,
@@ -68,15 +69,20 @@ const masterDataGroup: NavGroupType = {
 };
 
 const importGroup: NavGroupType = {
-    title: 'Importación',
+    title: 'Datos Históricos',
     items: [
+        {
+            title: 'Facturas',
+            href: '/invoices',
+            icon: FileText,
+        },
         {
             title: 'Importar Facturas',
             href: '/import/invoices',
             icon: Upload,
         },
         {
-            title: 'Historial',
+            title: 'Historial de Importación',
             href: '/import/history',
             icon: Folder,
         },

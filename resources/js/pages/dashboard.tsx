@@ -1,6 +1,7 @@
 import { KPICard } from '@/components/projections/kpi-card';
 import { ProjectionChart } from '@/components/projections/projection-chart';
 import { ProjectionTable } from '@/components/projections/projection-table';
+import { ExportButton } from '@/components/reports/ExportButton';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChartCard } from '@/components/ui/chart-card';
@@ -186,6 +187,19 @@ export default function Dashboard({
                         scenario
                             ? `Escenario: ${scenario.name}`
                             : 'Seleccione un escenario para ver proyecciones'
+                    }
+                    actions={
+                        scenario ? (
+                            <ExportButton
+                                endpoint={`/api/v1/reports/projections/${scenario.id}`}
+                                params={{
+                                    year: filters.years?.[0],
+                                    customer_type_id: filters.customer_type_id,
+                                    business_group_id: filters.business_group_id,
+                                }}
+                                filename={`dashboard_${scenario.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`}
+                            />
+                        ) : undefined
                     }
                 />
 

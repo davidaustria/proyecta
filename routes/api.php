@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\BusinessGroupController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
-use App\Http\Controllers\InflationRateController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\InflationRateController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectionComparisonController;
@@ -65,4 +66,9 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     Route::post('inflation-rates', [InflationRateController::class, 'store'])->name('inflation-rates.store');
     Route::post('inflation-rates/bulk', [InflationRateController::class, 'bulkStore'])->name('inflation-rates.bulk-store');
     Route::delete('inflation-rates/{year}', [InflationRateController::class, 'destroy'])->name('inflation-rates.destroy');
+
+    // Report Export Routes
+    Route::get('reports/projections/{scenario}', [ReportController::class, 'exportProjections'])->name('reports.export-projections');
+    Route::get('reports/comparison', [ReportController::class, 'exportComparison'])->name('reports.export-comparison');
+    Route::get('reports/invoices', [ReportController::class, 'exportInvoices'])->name('reports.export-invoices');
 });

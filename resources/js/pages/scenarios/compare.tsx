@@ -1,4 +1,5 @@
 import { ProjectionChart } from '@/components/projections/projection-chart';
+import { ExportButton } from '@/components/reports/ExportButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartCard } from '@/components/ui/chart-card';
@@ -206,6 +207,25 @@ export default function ScenarioCompare({
                 <PageHeader
                     title="Comparar Escenarios"
                     subtitle="Analice las diferencias entre múltiples escenarios de proyección"
+                    actions={
+                        hasComparison ? (
+                            <ExportButton
+                                endpoint="/api/v1/reports/comparison"
+                                params={{
+                                    scenario_ids: [
+                                        scenario1,
+                                        scenario2,
+                                        scenario3,
+                                        scenario4,
+                                    ].filter((id) => id !== undefined),
+                                    year,
+                                    customer_type_id: customerTypeId,
+                                    business_group_id: businessGroupId,
+                                }}
+                                filename={`comparacion_escenarios_${new Date().toISOString().split('T')[0]}.xlsx`}
+                            />
+                        ) : undefined
+                    }
                 />
 
                 {/* Selection Form */}
