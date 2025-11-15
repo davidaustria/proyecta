@@ -11,7 +11,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/use-toast';
+import { CALCULATION_METHOD_LABELS } from '@/lib/constants';
 import type { Scenario } from '@/types';
 
 interface CalculateProjectionsButtonProps {
@@ -31,9 +32,9 @@ export function CalculateProjectionsButton({
 }: CalculateProjectionsButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
-  const { toast } = useToast();
+  const { success, error } = useToast();
 
-  const hasExistingProjections = scenario.projections_count > 0;
+  const hasExistingProjections = (scenario.projections_count ?? 0) > 0;
 
   const handleCalculate = () => {
     setIsCalculating(true);
@@ -48,10 +49,8 @@ export function CalculateProjectionsButton({
           const response = page.props.flash;
           const projectionsCount = response?.projections_count ?? scenario.projections_count;
 
-          toast({
+          success(`Se han generado ${projectionsCount} proyecciones exitosamente.`, {
             title: 'Proyecciones calculadas',
-            description: `Se han generado ${projectionsCount} proyecciones exitosamente.`,
-            variant: 'success',
           });
 
           setIsOpen(false);
@@ -60,10 +59,8 @@ export function CalculateProjectionsButton({
         onError: (errors: any) => {
           const errorMessage = errors.error || 'Ocurrió un error al calcular las proyecciones';
 
-          toast({
+          error(errorMessage, {
             title: 'Error al calcular proyecciones',
-            description: errorMessage,
-            variant: 'destructive',
           });
         },
         onFinish: () => {
@@ -97,7 +94,7 @@ export function CalculateProjectionsButton({
 
           <div className="space-y-4">
             {hasExistingProjections && (
-              <Alert variant="warning">
+              <Alert>
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription>
                   Este escenario ya tiene {scenario.projections_count} proyección(es) existente(s).
@@ -113,7 +110,7 @@ export function CalculateProjectionsButton({
                 <li>Año base: {scenario.base_year}</li>
                 <li>Años de proyección: {scenario.projection_years}</li>
                 <li>Meses históricos: {scenario.historical_months}</li>
-                <li>Método de cálculo: {scenario.calculation_method === 'average' ? 'Promedio Simple' : 'Análisis de Tendencias'}</li>
+                <li>Método de cálculo: {CALCULATION_METHOD_LABELS[scenario.calculation_method]}</li>
                 <li>Incluir inflación: {scenario.include_inflation ? 'Sí' : 'No'}</li>
                 <li>Supuestos configurados: {scenario.assumptions_count}</li>
               </ul>

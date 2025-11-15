@@ -39,7 +39,7 @@ interface AssumptionFormProps {
     errors?: Record<string, string>;
 }
 
-export interface AssumptionFormData {
+export interface AssumptionFormData extends Record<string, any> {
     scenario_id: number;
     year: number;
     hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';

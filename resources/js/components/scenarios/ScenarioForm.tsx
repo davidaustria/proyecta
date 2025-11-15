@@ -31,7 +31,7 @@ interface ScenarioFormProps {
     errors?: Record<string, string>;
 }
 
-export interface ScenarioFormData {
+export interface ScenarioFormData extends Record<string, any> {
     name: string;
     description?: string;
     base_year: number;

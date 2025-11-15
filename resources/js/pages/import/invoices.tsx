@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Head, router } from '@inertiajs/react';
-import AppSidebarLayout from '@/layouts/app-sidebar-layout';
-import { PageHeader } from '@/components/PageHeader';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
+import { PageHeader } from '@/components/ui/page-header';
 import { FileUploader } from '@/components/import/FileUploader';
 import {
     ColumnMapper,
@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/use-toast';
 import type {
     ColumnMapping,
     ImportBatch,

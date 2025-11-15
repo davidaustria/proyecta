@@ -1,8 +1,8 @@
 import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
-import AppSidebarLayout from '@/layouts/app-sidebar-layout';
-import { PageHeader } from '@/components/PageHeader';
-import { DataTable } from '@/components/DataTable';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
+import { PageHeader } from '@/components/ui/page-header';
+import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -16,8 +16,8 @@ import {
 import { Upload, FileText, Download, Search, RefreshCw } from 'lucide-react';
 import type { ImportBatch, PaginatedData } from '@/types';
 import { formatDateTime } from '@/lib/formatters';
-import { useConfirm } from '@/hooks/useConfirm';
-import { useToast } from '@/hooks/useToast';
+import { useConfirm } from '@/hooks/use-confirm';
+import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 
 interface Props {
@@ -262,12 +262,15 @@ export default function ImportHistory({ batches, filters }: Props) {
                     actions={actions}
                     pagination={{
                         currentPage: batches.current_page,
-                        lastPage: batches.last_page,
-                        perPage: batches.per_page,
+                        totalPages: batches.last_page,
+                        pageSize: batches.per_page,
                         total: batches.total,
-                        from: batches.from,
-                        to: batches.to,
-                        links: batches.links,
+                        onPageChange: (page) => {
+                            router.visit(`/import/history?page=${page}`, {
+                                preserveState: true,
+                                preserveScroll: true,
+                            });
+                        },
                     }}
                 />
             </div>

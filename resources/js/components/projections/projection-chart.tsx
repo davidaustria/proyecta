@@ -98,7 +98,10 @@ function CustomTooltip({
   label,
   formatAsCurrency,
   currency,
-}: TooltipProps<any, any> & {
+}: {
+  active?: boolean
+  payload?: Array<{ color?: string; name?: string; value?: number }>
+  label?: string
   formatAsCurrency?: boolean
   currency?: string
 }) {
@@ -109,7 +112,7 @@ function CustomTooltip({
   return (
     <div className="rounded-lg border bg-background p-3 shadow-lg">
       <p className="mb-2 font-semibold">{label}</p>
-      {payload.map((entry, index) => (
+      {payload.map((entry: any, index: number) => (
         <div key={index} className="flex items-center gap-2 text-sm">
           <div
             className="size-3 rounded-sm"

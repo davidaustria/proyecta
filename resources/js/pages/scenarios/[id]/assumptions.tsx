@@ -244,7 +244,7 @@ export default function ScenarioAssumptions({
             <div className="space-y-4">
                 <Tabs
                     value={currentYear.toString()}
-                    onValueChange={(value) => setCurrentYear(parseInt(value))}
+                    onValueChange={(value: string) => setCurrentYear(parseInt(value))}
                 >
                     <TabsList>
                         {availableYears.map((year) => (
@@ -272,12 +272,10 @@ export default function ScenarioAssumptions({
                                         icon={Plus}
                                         title="No hay supuestos para este año"
                                         description="Crea el primer supuesto para comenzar a proyectar."
-                                        action={
-                                            <Button onClick={handleCreate}>
-                                                <Plus className="mr-2 h-4 w-4" />
-                                                Crear Supuesto
-                                            </Button>
-                                        }
+                                        action={{
+                                            label: 'Crear Supuesto',
+                                            onClick: handleCreate,
+                                        }}
                                     />
                                 ) : (
                                     <div className="rounded-md border">

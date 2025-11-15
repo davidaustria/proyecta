@@ -134,7 +134,7 @@ export default function ScenarioCompare({
     if (customerTypeId) params.customer_type_id = customerTypeId
     if (businessGroupId) params.business_group_id = businessGroupId
 
-    router.visit(route("scenarios.compare"), {
+    router.visit("/scenarios/compare", {
       data: params,
       preserveState: true,
     })

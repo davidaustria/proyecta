@@ -191,6 +191,11 @@ export const MONTH_NAMES_SHORT = [
 ] as const;
 
 /**
+ * Alias for MONTH_NAMES_SHORT (commonly used in charts and displays)
+ */
+export const MONTHS = MONTH_NAMES_SHORT;
+
+/**
  * Default number of historical months to use for projections
  */
 export const DEFAULT_HISTORICAL_MONTHS = 12;
@@ -228,13 +233,13 @@ export const PAGE_SIZE_OPTIONS = [10, 15, 25, 50, 100] as const;
 /**
  * Chart colors for projections (Tailwind colors)
  */
-export const CHART_COLORS = {
-    primary: 'hsl(var(--primary))',
-    secondary: 'hsl(var(--secondary))',
-    accent: 'hsl(var(--accent))',
-    muted: 'hsl(var(--muted))',
-    destructive: 'hsl(var(--destructive))',
-} as const;
+export const CHART_COLORS = [
+    'hsl(var(--primary))',
+    'hsl(var(--secondary))',
+    'hsl(var(--accent))',
+    'hsl(var(--muted))',
+    'hsl(var(--destructive))',
+] as const;
 
 /**
  * Chart colors palette for multiple series

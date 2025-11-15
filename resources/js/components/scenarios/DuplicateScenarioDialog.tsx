@@ -13,7 +13,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/use-toast';
+import { CALCULATION_METHOD_LABELS } from '@/lib/constants';
 import type { Scenario } from '@/types';
 
 interface DuplicateScenarioDialogProps {
@@ -37,7 +38,7 @@ export function DuplicateScenarioDialog({
   const [copyProjections, setCopyProjections] = useState(false);
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [nameError, setNameError] = useState<string | null>(null);
-  const { toast } = useToast();
+  const { success, error } = useToast();
 
   // Support both controlled and uncontrolled modes
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
@@ -79,10 +80,8 @@ export function DuplicateScenarioDialog({
       {
         preserveScroll: true,
         onSuccess: () => {
-          toast({
+          success(`El escenario "${name}" ha sido creado exitosamente.`, {
             title: 'Escenario duplicado',
-            description: `El escenario "${name}" ha sido creado exitosamente.`,
-            variant: 'success',
           });
 
           setIsOpen(false);
@@ -93,10 +92,8 @@ export function DuplicateScenarioDialog({
             setNameError(errors.name);
           } else {
             const errorMessage = errors.error || 'Ocurrió un error al duplicar el escenario';
-            toast({
+            error(errorMessage, {
               title: 'Error al duplicar',
-              description: errorMessage,
-              variant: 'destructive',
             });
           }
         },
@@ -186,7 +183,7 @@ export function DuplicateScenarioDialog({
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               <li>Año base: {scenario.base_year}</li>
               <li>Años de proyección: {scenario.projection_years}</li>
-              <li>Método: {scenario.calculation_method === 'average' ? 'Promedio Simple' : 'Análisis de Tendencias'}</li>
+              <li>Método: {CALCULATION_METHOD_LABELS[scenario.calculation_method]}</li>
               <li>Estado: Se creará como "Borrador"</li>
             </ul>
           </div>

@@ -29,7 +29,7 @@ import { Head, router } from '@inertiajs/react';
 import { Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
-interface ScenarioFormData {
+interface ScenarioFormData extends Record<string, any> {
     name: string;
     description: string;
     base_year: number;

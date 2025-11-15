@@ -1,7 +1,7 @@
 import { Head, router } from '@inertiajs/react';
-import AppSidebarLayout from '@/layouts/app-sidebar-layout';
-import { PageHeader } from '@/components/PageHeader';
-import { DataTable } from '@/components/DataTable';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
+import { PageHeader } from '@/components/ui/page-header';
+import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import type { ImportBatch, Invoice, PaginatedData } from '@/types';
 import { formatDateTime, formatCurrency } from '@/lib/formatters';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/use-toast';
 
 interface Props {
     batch: ImportBatch;
@@ -307,12 +307,15 @@ export default function ImportDetail({ batch, invoices }: Props) {
                             columns={columns}
                             pagination={{
                                 currentPage: invoices.current_page,
-                                lastPage: invoices.last_page,
-                                perPage: invoices.per_page,
+                                totalPages: invoices.last_page,
+                                pageSize: invoices.per_page,
                                 total: invoices.total,
-                                from: invoices.from,
-                                to: invoices.to,
-                                links: invoices.links,
+                                onPageChange: (page) => {
+                                    router.visit(`/import/history/${batch.id}?page=${page}`, {
+                                        preserveState: true,
+                                        preserveScroll: true,
+                                    });
+                                },
                             }}
                         />
                     </CardContent>
