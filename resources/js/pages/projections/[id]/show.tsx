@@ -1,5 +1,6 @@
 import { KPICard } from '@/components/projections/kpi-card';
 import { ProjectionChart } from '@/components/projections/projection-chart';
+import { ExportButton } from '@/components/reports/ExportButton';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -96,6 +97,17 @@ export default function ProjectionShow({ projection }: ProjectionShowProps) {
                 <PageHeader
                     title={`Proyección ${projection.year}`}
                     subtitle={getDimensionLabel()}
+                    actions={
+                        <ExportButton
+                            endpoint={`/api/v1/reports/projections/${projection.scenario_id}`}
+                            params={{
+                                year: projection.year,
+                                customer_type_id: projection.customer_type_id,
+                                business_group_id: projection.business_group_id,
+                            }}
+                            filename={`proyeccion_${projection.year}_${getDimensionLabel().replace(/\s+/g, '_')}.xlsx`}
+                        />
+                    }
                 />
 
                 {/* Scenario Info */}

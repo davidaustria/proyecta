@@ -220,6 +220,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('customers/{customer}', function (\App\Models\Customer $customer) {
         $customer->loadCount('invoices');
+
         return Inertia::render('customers/[id]/show', [
             'customer' => $customer->load(['customerType', 'businessGroup']),
         ]);
@@ -359,6 +360,46 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'invoices' => $invoices,
         ]);
     })->name('import.history.show');
+
+    // Invoices
+    Route::get('invoices', function () {
+        $query = \App\Models\Invoice::query()
+            ->with(['customer.customerType', 'customer.businessGroup'])
+            ->orderBy('invoice_date', 'desc');
+
+        // Filters
+        if (request('customer_id')) {
+            $query->where('customer_id', request('customer_id'));
+        }
+
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_number', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if (request('date_from')) {
+            $query->where('invoice_date', '>=', request('date_from'));
+        }
+
+        if (request('date_to')) {
+            $query->where('invoice_date', '<=', request('date_to'));
+        }
+
+        return Inertia::render('invoices/index', [
+            'invoices' => $query->paginate(20),
+            'customers' => \App\Models\Customer::orderBy('name')->get(['id', 'name']),
+            'filters' => request()->only(['customer_id', 'status', 'search', 'date_from', 'date_to']),
+        ]);
+    })->name('web.invoices.index');
 
     // Configuration
     Route::get('settings/inflation-rates', function () {

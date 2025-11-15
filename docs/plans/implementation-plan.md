@@ -1,7 +1,7 @@
 # Plan de Implementación - Sistema de Proyección de Ingresos
 
 **Fecha de creación:** 2025-11-13
-**Versión:** 1.8
+**Versión:** 1.9
 **Estado:** En Progreso
 **Última Actualización:** 2025-11-15
 
@@ -42,7 +42,8 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 - ✅ Fase 5 completada (Escenarios: Listado, Crear/Editar, Supuestos, Cálculo, Duplicar) - Path crítico del MVP
 - ✅ Fase 6 completada (Dashboard de Proyecciones - Dashboard, Detalle, Comparación) - Path crítico del MVP
 - ✅ Fase 7 completada (Módulo de Importación - Wizard, Historial, Validaciones)
-- 📊 Progreso: 62.6% (144/230 tareas completadas)
+- ✅ Fase 8 completada (Reportes y Exportaciones - Excel exports desde Dashboard, Proyecciones, Comparación, Facturas)
+- 📊 Progreso: 68.1% (157/231 tareas completadas)
 
 ---
 
@@ -669,44 +670,57 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 ---
 
-### **FASE 8: Reportes y Exportaciones** ⏳
+### **FASE 8: Reportes y Exportaciones** ✅
 **Duración:** 0.5 semanas
+**Estado:** COMPLETADO (2025-11-15)
 **Objetivo:** Generación de reportes Excel/PDF
 
 #### 8.1 Backend
-- [ ] **`ReportGeneratorService`** - Generación de archivos
-  - [ ] Método `exportProjectionsToExcel(Scenario $scenario, $filters): string`
-    - [ ] Usar `maatwebsite/excel`
-    - [ ] Sheets: Resumen, Detalle Mensual, Supuestos
-    - [ ] Formato: headers bold, moneda, totales
-  - [ ] Método `exportComparisonToExcel($scenarios, $filters): string`
-    - [ ] Sheet comparativa
-  - [ ] Método `exportInvoicesToExcel($filters): string`
+- [x] **`ReportGeneratorService`** - Generación de archivos
+  - [x] Método `exportProjectionsToExcel(Scenario $scenario, $filters): string`
+    - [x] Usar `maatwebsite/excel`
+    - [x] Sheets: Resumen, Detalle Mensual, Supuestos
+    - [x] Formato: headers bold, moneda, totales
+  - [x] Método `exportComparisonToExcel($scenarios, $filters): string`
+    - [x] Sheet comparativa
+  - [x] Método `exportInvoicesToExcel($filters): string`
 
-- [ ] Controlador `ReportController`
-  - [ ] `exportProjections(scenario_id, filters)` - GET, retorna archivo
-  - [ ] `exportComparison(scenario_ids, filters)` - GET, retorna archivo
-  - [ ] `exportInvoices(filters)` - GET, retorna archivo
+- [x] Controlador `ReportController`
+  - [x] `exportProjections(scenario_id, filters)` - GET, retorna archivo
+  - [x] `exportComparison(scenario_ids, filters)` - GET, retorna archivo
+  - [x] `exportInvoices(filters)` - GET, retorna archivo
 
 #### 8.2 Frontend
-- [ ] Botones de exportación en:
-  - [ ] Dashboard (exportar vista actual)
-  - [ ] Proyecciones (exportar detalle)
-  - [ ] Comparación (exportar tabla comparativa)
-  - [ ] Invoices (exportar facturas filtradas)
+- [x] Botones de exportación en:
+  - [x] Dashboard (exportar vista actual)
+  - [x] Proyecciones (exportar detalle)
+  - [x] Comparación (exportar tabla comparativa)
+  - [x] Invoices (exportar facturas filtradas)
 
-- [ ] `components/reports/ExportButton.tsx` - Botón genérico
-  - [ ] Props: endpoint, filters, filename
-  - [ ] Loading state durante generación
-  - [ ] Auto-descarga del archivo
+- [x] `components/reports/ExportButton.tsx` - Botón genérico
+  - [x] Props: endpoint, filters, filename
+  - [x] Loading state durante generación
+  - [x] Auto-descarga del archivo
 
 - [ ] Modal de configuración (opcional):
   - [ ] Seleccionar columnas a incluir
   - [ ] Formato (Excel, CSV)
 
 **Entregables:**
-- Exportación funcional a Excel
-- Reportes bien formateados y legibles
+- ✅ Exportación funcional a Excel
+- ✅ Reportes bien formateados y legibles
+- ✅ maatwebsite/excel instalado y configurado
+- ✅ ReportGeneratorService con 3 métodos de exportación
+- ✅ 6 clases de Export Sheets (Summary, MonthlyDetail, Assumptions, Comparison, Invoices, ProjectionExport wrapper)
+- ✅ ReportController con 3 endpoints
+- ✅ 3 rutas API registradas (/api/v1/reports/*)
+- ✅ ExportButton component reutilizable
+- ✅ Export integrado en 4 páginas (Dashboard, Projection detail, Comparison, Invoices)
+- ✅ Página de Invoices creada con filtros y export
+- ✅ Ruta web para Invoices
+- ✅ Navegación actualizada (Datos Históricos section)
+- ✅ ~700 líneas de código backend
+- ✅ ~300 líneas de código frontend
 
 ---
 
@@ -910,11 +924,11 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 ### Backend
 - [x] **Fase 1:** Servicios de Cálculo (14/14 tareas) ✅
 - [x] **Fase 2:** Controladores y API (42/42 tareas) ✅
-- [ ] **Fase 8:** Reportes Backend (0/4 tareas)
+- [x] **Fase 8:** Reportes Backend (7/7 tareas) ✅
 - [ ] **Fase 9:** Testing Backend (0/35 tareas)
 - [ ] **Fase 10:** Optimización Backend (0/8 tareas)
 
-**Total Backend:** 56/103 tareas (54.4%)
+**Total Backend:** 63/106 tareas (59.4%)
 
 ### Frontend
 - [x] **Fase 3.1:** Layouts y Navegación (8/8 tareas) ✅
@@ -928,12 +942,12 @@ Fase 1 → Fase 2 → Fase 5 → Fase 6
 
 - [x] **Fase 6:** Dashboard (24/24 tareas) ✅
 - [x] **Fase 7:** Importación (20/20 tareas) ✅
-- [ ] **Fase 8:** Reportes Frontend (0/3 tareas)
+- [x] **Fase 8:** Reportes Frontend (6/6 tareas) ✅
 - [ ] **Fase 10:** Optimización Frontend (0/16 tareas)
 
-**Total Frontend:** 88/151 tareas (58.3%)
+**Total Frontend:** 94/141 tareas (66.7%)
 
-### **PROGRESO GLOBAL: 144/254 tareas (56.7%)**
+### **PROGRESO GLOBAL: 157/247 tareas (63.6%)**
 
 
 ---
@@ -1036,6 +1050,60 @@ Duración estimada: **4-5 semanas**
 ---
 
 ## Changelog
+
+### v1.9 (2025-11-15)
+- ✅ **FASE 8 COMPLETADA:** Reportes y Exportaciones
+  - **Backend:**
+    - Instalación y configuración de `maatwebsite/excel` package
+    - `ReportGeneratorService` con 3 métodos de exportación:
+      - `exportProjectionsToExcel()` - Exporta proyecciones de un escenario con 3 sheets:
+        - Resumen: Lista de proyecciones con totales agregados
+        - Detalle Mensual: Desglose mensual por proyección
+        - Supuestos: Configuración de supuestos aplicados
+      - `exportComparisonToExcel()` - Exporta comparación de múltiples escenarios
+      - `exportInvoicesToExcel()` - Exporta facturas con filtros aplicados
+    - 6 Export Sheet classes con formato profesional:
+      - Headers en negrita con fondo gris
+      - Columnas auto-ajustables
+      - Formato de moneda y porcentajes
+      - Nombres de dimensiones contextuales
+    - `ReportController` con 3 endpoints GET:
+      - `/api/v1/reports/projections/{scenario}` - Export proyecciones
+      - `/api/v1/reports/comparison` - Export comparación (valida 2-4 escenarios)
+      - `/api/v1/reports/invoices` - Export facturas
+    - Auto-descarga con `deleteFileAfterSend()`
+  - **Frontend:**
+    - `ExportButton` component reutilizable (`components/reports/ExportButton.tsx`):
+      - Loading state con spinner durante generación
+      - Auto-descarga de archivo mediante blob handling
+      - Detección automática de filename desde Content-Disposition header
+      - Error handling con mensajes específicos por código HTTP
+      - Soporte para GET y POST requests
+      - Props: endpoint, params, filename, variant, size
+    - Integración de export en 4 páginas:
+      - Dashboard: Export con filtros de escenario, año, tipo cliente, grupo
+      - Proyecciones detail: Export de proyección específica
+      - Comparación de escenarios: Export de datos comparativos
+      - Facturas: Export con filtros de cliente, estado, fechas, búsqueda
+    - Nueva página `invoices/index.tsx`:
+      - Lista de facturas con DataTable
+      - Filtros: búsqueda, cliente, estado
+      - Integración con ExportButton
+      - Badges de estado con colores
+      - Formato de moneda y fechas
+    - Ruta web `/invoices` con filtros y paginación
+    - Navegación actualizada:
+      - Grupo "Datos Históricos" (antes "Importación")
+      - Links: Facturas, Importar Facturas, Historial de Importación
+  - **Características:**
+    - Spanish UI completo
+    - Dark mode support
+    - TypeScript type safety
+    - Error handling robusto
+    - Toast notifications para feedback
+    - ~700 líneas de código backend
+    - ~300 líneas de código frontend
+- Progreso global actualizado: 63.6% (157/247 tareas completadas)
 
 ### v1.8 (2025-11-15)
 - ✅ **FASE 7 COMPLETADA:** Frontend - Módulo de Importación
@@ -1489,5 +1557,5 @@ Duración estimada: **4-5 semanas**
 ---
 
 **Documento mantenido por:** Equipo de Desarrollo
-**Última actualización:** 2025-11-15 (v1.8)
+**Última actualización:** 2025-11-15 (v1.9)
 **Próxima revisión:** Al completar cada fase
