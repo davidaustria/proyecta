@@ -141,6 +141,16 @@ export interface ScenarioAssumption {
     hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';
 }
 
+// Invoice and Import
+export interface InvoiceItem {
+    id: number;
+    invoice_id: number;
+    product_id?: number;
+    description: string;
+    quantity: number;
+    unit_price: number;
+}
+
 export interface ProjectionDetail {
     id: number;
     projection_id: number;
@@ -150,6 +160,65 @@ export interface ProjectionDetail {
     total: number;
     created_at: string;
     updated_at: string;
+    product?: Product;
+}
+
+export interface Invoice {
+    id: number;
+    invoice_number: string;
+    customer_id: number;
+    invoice_date: string;
+    due_date?: string;
+    subtotal: number;
+    tax: number;
+    total: number;
+    currency: string;
+    status: 'draft' | 'issued' | 'paid' | 'cancelled';
+    import_batch_id?: number;
+    notes?: string;
+    created_at: string;
+    updated_at: string;
+    customer?: Customer;
+    items?: InvoiceItem[];
+    items_count?: number;
+}
+
+export interface ImportBatch {
+    id: number;
+    filename: string;
+    source_system?: string;
+    total_records: number;
+    successful_records: number;
+    failed_records: number;
+    status: 'pending' | 'processing' | 'completed' | 'failed';
+    error_log?: string;
+    imported_by: number;
+    imported_at: string;
+    created_at: string;
+    updated_at: string;
+    user?: User;
+    invoices?: Invoice[];
+}
+
+// Import types for wizard
+export interface ImportPreviewRow {
+    row_number: number;
+    data: Record<string, string | number>;
+    errors?: string[];
+    is_valid: boolean;
+}
+
+export interface ImportPreviewData {
+    headers: string[];
+    rows: ImportPreviewRow[];
+    total_rows: number;
+    valid_rows: number;
+    invalid_rows: number;
+}
+
+export interface ColumnMapping {
+    excel_column: string;
+    system_field: string;
 }
 
 export interface Projection {
