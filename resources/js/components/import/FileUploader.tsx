@@ -1,8 +1,8 @@
-import { Upload, X, FileSpreadsheet } from 'lucide-react';
-import { useState, useCallback, type ChangeEvent, type DragEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { FileSpreadsheet, Upload, X } from 'lucide-react';
+import { useCallback, useState, type ChangeEvent, type DragEvent } from 'react';
 
 interface FileUploaderProps {
     onFileSelect: (file: File) => void;

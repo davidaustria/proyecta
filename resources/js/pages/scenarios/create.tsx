@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -251,7 +257,9 @@ export default function CreateScenario() {
                                 <div className="space-y-2">
                                     <Label htmlFor="name">
                                         Nombre del Escenario{' '}
-                                        <span className="text-destructive">*</span>
+                                        <span className="text-destructive">
+                                            *
+                                        </span>
                                     </Label>
                                     <Input
                                         id="name"
@@ -297,7 +305,9 @@ export default function CreateScenario() {
                                 <div className="space-y-2">
                                     <Label htmlFor="base_year">
                                         Año Base{' '}
-                                        <span className="text-destructive">*</span>
+                                        <span className="text-destructive">
+                                            *
+                                        </span>
                                     </Label>
                                     <Input
                                         id="base_year"
@@ -396,7 +406,9 @@ export default function CreateScenario() {
                                 <div className="space-y-2">
                                     <Label htmlFor="calculation_method">
                                         Método de Cálculo{' '}
-                                        <span className="text-destructive">*</span>
+                                        <span className="text-destructive">
+                                            *
+                                        </span>
                                     </Label>
                                     <Select
                                         value={formData.calculation_method}
@@ -501,20 +513,26 @@ export default function CreateScenario() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem
-                                                    value={SCENARIO_STATUS.DRAFT}
+                                                    value={
+                                                        SCENARIO_STATUS.DRAFT
+                                                    }
                                                 >
                                                     {
                                                         SCENARIO_STATUS_LABELS[
-                                                            SCENARIO_STATUS.DRAFT
+                                                            SCENARIO_STATUS
+                                                                .DRAFT
                                                         ]
                                                     }
                                                 </SelectItem>
                                                 <SelectItem
-                                                    value={SCENARIO_STATUS.ACTIVE}
+                                                    value={
+                                                        SCENARIO_STATUS.ACTIVE
+                                                    }
                                                 >
                                                     {
                                                         SCENARIO_STATUS_LABELS[
-                                                            SCENARIO_STATUS.ACTIVE
+                                                            SCENARIO_STATUS
+                                                                .ACTIVE
                                                         ]
                                                     }
                                                 </SelectItem>

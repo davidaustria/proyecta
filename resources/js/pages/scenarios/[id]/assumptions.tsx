@@ -1,6 +1,4 @@
-import type {
-    AssumptionFormData,
-} from '@/components/scenarios/AssumptionForm';
+import type { AssumptionFormData } from '@/components/scenarios/AssumptionForm';
 import { AssumptionForm } from '@/components/scenarios/AssumptionForm';
 import { CalculateProjectionsButton } from '@/components/scenarios/CalculateProjectionsButton';
 import { Badge } from '@/components/ui/badge';
@@ -128,9 +126,12 @@ export default function ScenarioAssumptions({
         if (confirmed) {
             router.delete(`/api/v1/scenario-assumptions/${assumption.id}`, {
                 onSuccess: () => {
-                    toast.success('El supuesto ha sido eliminado exitosamente.', {
-                        title: 'Supuesto eliminado',
-                    });
+                    toast.success(
+                        'El supuesto ha sido eliminado exitosamente.',
+                        {
+                            title: 'Supuesto eliminado',
+                        },
+                    );
                 },
                 onError: () => {
                     toast.error('No se pudo eliminar el supuesto.', {
@@ -146,30 +147,34 @@ export default function ScenarioAssumptions({
 
         if (editingAssumption) {
             // Update existing assumption
-            router.put(`/api/v1/scenario-assumptions/${editingAssumption.id}`, data, {
-                onSuccess: () => {
-                    toast.success(
-                        'El supuesto ha sido actualizado exitosamente.',
-                        {
-                            title: 'Supuesto actualizado',
-                        },
-                    );
-                    setShowForm(false);
-                    setEditingAssumption(null);
+            router.put(
+                `/api/v1/scenario-assumptions/${editingAssumption.id}`,
+                data,
+                {
+                    onSuccess: () => {
+                        toast.success(
+                            'El supuesto ha sido actualizado exitosamente.',
+                            {
+                                title: 'Supuesto actualizado',
+                            },
+                        );
+                        setShowForm(false);
+                        setEditingAssumption(null);
+                    },
+                    onError: (errors) => {
+                        setErrors(errors as Record<string, string>);
+                        toast.error(
+                            'Hubo un error al actualizar el supuesto. Verifica los campos.',
+                            {
+                                title: 'Error',
+                            },
+                        );
+                    },
+                    onFinish: () => {
+                        setProcessing(false);
+                    },
                 },
-                onError: (errors) => {
-                    setErrors(errors as Record<string, string>);
-                    toast.error(
-                        'Hubo un error al actualizar el supuesto. Verifica los campos.',
-                        {
-                            title: 'Error',
-                        },
-                    );
-                },
-                onFinish: () => {
-                    setProcessing(false);
-                },
-            });
+            );
         } else {
             // Create new assumption
             router.post('/api/v1/scenario-assumptions', data, {
@@ -244,7 +249,9 @@ export default function ScenarioAssumptions({
             <div className="space-y-4">
                 <Tabs
                     value={currentYear.toString()}
-                    onValueChange={(value: string) => setCurrentYear(parseInt(value))}
+                    onValueChange={(value: string) =>
+                        setCurrentYear(parseInt(value))
+                    }
                 >
                     <TabsList>
                         {availableYears.map((year) => (
@@ -303,96 +310,99 @@ export default function ScenarioAssumptions({
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y">
-                                                {yearAssumptions.map((assumption) => (
-                                                    <tr
-                                                        key={assumption.id}
-                                                        className="hover:bg-muted/50"
-                                                    >
-                                                        <td className="p-3">
-                                                            <Badge
-                                                                variant={
-                                                                    HIERARCHY_COLORS[
-                                                                        assumption
-                                                                            .hierarchy_level
-                                                                    ]
-                                                                }
-                                                            >
-                                                                {
-                                                                    HIERARCHY_LABELS[
-                                                                        assumption
-                                                                            .hierarchy_level
-                                                                    ]
-                                                                }
-                                                            </Badge>
-                                                        </td>
-                                                        <td className="p-3 text-sm">
-                                                            {getDimensionName(
-                                                                assumption,
-                                                            )}
-                                                        </td>
-                                                        <td className="p-3 text-right text-sm font-mono">
-                                                            {formatRate(
-                                                                assumption.growth_rate,
-                                                            )}
-                                                        </td>
-                                                        <td className="p-3 text-right text-sm font-mono">
-                                                            {formatRate(
-                                                                assumption.inflation_rate,
-                                                            )}
-                                                        </td>
-                                                        <td className="p-3 text-center text-sm">
-                                                            {assumption.seasonality_factors &&
-                                                            assumption
-                                                                .seasonality_factors
-                                                                .length === 12 ? (
-                                                                <Badge variant="outline">
-                                                                    Sí
-                                                                </Badge>
-                                                            ) : (
-                                                                <span className="text-muted-foreground">
-                                                                    No
-                                                                </span>
-                                                            )}
-                                                        </td>
-                                                        <td className="p-3 text-right">
-                                                            <DropdownMenu>
-                                                                <DropdownMenuTrigger
-                                                                    asChild
+                                                {yearAssumptions.map(
+                                                    (assumption) => (
+                                                        <tr
+                                                            key={assumption.id}
+                                                            className="hover:bg-muted/50"
+                                                        >
+                                                            <td className="p-3">
+                                                                <Badge
+                                                                    variant={
+                                                                        HIERARCHY_COLORS[
+                                                                            assumption
+                                                                                .hierarchy_level
+                                                                        ]
+                                                                    }
                                                                 >
-                                                                    <Button
-                                                                        variant="ghost"
-                                                                        size="sm"
+                                                                    {
+                                                                        HIERARCHY_LABELS[
+                                                                            assumption
+                                                                                .hierarchy_level
+                                                                        ]
+                                                                    }
+                                                                </Badge>
+                                                            </td>
+                                                            <td className="p-3 text-sm">
+                                                                {getDimensionName(
+                                                                    assumption,
+                                                                )}
+                                                            </td>
+                                                            <td className="p-3 text-right font-mono text-sm">
+                                                                {formatRate(
+                                                                    assumption.growth_rate,
+                                                                )}
+                                                            </td>
+                                                            <td className="p-3 text-right font-mono text-sm">
+                                                                {formatRate(
+                                                                    assumption.inflation_rate,
+                                                                )}
+                                                            </td>
+                                                            <td className="p-3 text-center text-sm">
+                                                                {assumption.seasonality_factors &&
+                                                                assumption
+                                                                    .seasonality_factors
+                                                                    .length ===
+                                                                    12 ? (
+                                                                    <Badge variant="outline">
+                                                                        Sí
+                                                                    </Badge>
+                                                                ) : (
+                                                                    <span className="text-muted-foreground">
+                                                                        No
+                                                                    </span>
+                                                                )}
+                                                            </td>
+                                                            <td className="p-3 text-right">
+                                                                <DropdownMenu>
+                                                                    <DropdownMenuTrigger
+                                                                        asChild
                                                                     >
-                                                                        <MoreHorizontal className="h-4 w-4" />
-                                                                    </Button>
-                                                                </DropdownMenuTrigger>
-                                                                <DropdownMenuContent align="end">
-                                                                    <DropdownMenuItem
-                                                                        onClick={() =>
-                                                                            handleEdit(
-                                                                                assumption,
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <Pencil className="mr-2 h-4 w-4" />
-                                                                        Editar
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuItem
-                                                                        onClick={() =>
-                                                                            handleDelete(
-                                                                                assumption,
-                                                                            )
-                                                                        }
-                                                                        className="text-red-600 dark:text-red-400"
-                                                                    >
-                                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                                        Eliminar
-                                                                    </DropdownMenuItem>
-                                                                </DropdownMenuContent>
-                                                            </DropdownMenu>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="sm"
+                                                                        >
+                                                                            <MoreHorizontal className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </DropdownMenuTrigger>
+                                                                    <DropdownMenuContent align="end">
+                                                                        <DropdownMenuItem
+                                                                            onClick={() =>
+                                                                                handleEdit(
+                                                                                    assumption,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <Pencil className="mr-2 h-4 w-4" />
+                                                                            Editar
+                                                                        </DropdownMenuItem>
+                                                                        <DropdownMenuItem
+                                                                            onClick={() =>
+                                                                                handleDelete(
+                                                                                    assumption,
+                                                                                )
+                                                                            }
+                                                                            className="text-red-600 dark:text-red-400"
+                                                                        >
+                                                                            <Trash2 className="mr-2 h-4 w-4" />
+                                                                            Eliminar
+                                                                        </DropdownMenuItem>
+                                                                    </DropdownMenuContent>
+                                                                </DropdownMenu>
+                                                            </td>
+                                                        </tr>
+                                                    ),
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>

@@ -42,7 +42,12 @@ interface AssumptionFormProps {
 export interface AssumptionFormData extends Record<string, any> {
     scenario_id: number;
     year: number;
-    hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';
+    hierarchy_level:
+        | 'global'
+        | 'customer_type'
+        | 'business_group'
+        | 'customer'
+        | 'product';
     business_group_id?: number;
     customer_type_id?: number;
     customer_id?: number;
@@ -79,10 +84,15 @@ export function AssumptionForm({
         product_id: assumption?.product_id,
         growth_rate: assumption?.growth_rate || 0,
         inflation_rate: assumption?.inflation_rate,
-        adjustment_type: assumption?.adjustment_type || ADJUSTMENT_TYPE.PERCENTAGE,
+        adjustment_type:
+            assumption?.adjustment_type || ADJUSTMENT_TYPE.PERCENTAGE,
         fixed_amount: assumption?.fixed_amount,
-        use_seasonality: !!(assumption?.seasonality_factors && assumption.seasonality_factors.length === 12),
-        seasonality_factors: assumption?.seasonality_factors || DEFAULT_SEASONALITY_FACTORS,
+        use_seasonality: !!(
+            assumption?.seasonality_factors &&
+            assumption.seasonality_factors.length === 12
+        ),
+        seasonality_factors:
+            assumption?.seasonality_factors || DEFAULT_SEASONALITY_FACTORS,
         notes: assumption?.notes || '',
     });
 
@@ -96,7 +106,9 @@ export function AssumptionForm({
         }));
     };
 
-    const handleHierarchyChange = (level: AssumptionFormData['hierarchy_level']) => {
+    const handleHierarchyChange = (
+        level: AssumptionFormData['hierarchy_level'],
+    ) => {
         // Reset dimension IDs when changing hierarchy level
         setFormData((prev) => ({
             ...prev,
@@ -128,7 +140,8 @@ export function AssumptionForm({
                 <div className="space-y-2">
                     <h3 className="text-lg font-medium">Dimensión y Alcance</h3>
                     <p className="text-sm text-muted-foreground">
-                        Selecciona el año y el nivel al que aplica este supuesto.
+                        Selecciona el año y el nivel al que aplica este
+                        supuesto.
                     </p>
                 </div>
 
@@ -149,14 +162,19 @@ export function AssumptionForm({
                             </SelectTrigger>
                             <SelectContent>
                                 {availableYears.map((year) => (
-                                    <SelectItem key={year} value={year.toString()}>
+                                    <SelectItem
+                                        key={year}
+                                        value={year.toString()}
+                                    >
                                         {year}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                         {errors.year && (
-                            <p className="text-sm text-destructive">{errors.year}</p>
+                            <p className="text-sm text-destructive">
+                                {errors.year}
+                            </p>
                         )}
                     </div>
 
@@ -174,7 +192,9 @@ export function AssumptionForm({
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="global">Global (Todos)</SelectItem>
+                                <SelectItem value="global">
+                                    Global (Todos)
+                                </SelectItem>
                                 <SelectItem value="customer_type">
                                     Por Tipo de Cliente
                                 </SelectItem>
@@ -202,7 +222,10 @@ export function AssumptionForm({
                         <Select
                             value={formData.customer_type_id?.toString() || ''}
                             onValueChange={(value) =>
-                                handleChange('customer_type_id', parseInt(value))
+                                handleChange(
+                                    'customer_type_id',
+                                    parseInt(value),
+                                )
                             }
                             disabled={!!assumption}
                         >
@@ -237,7 +260,10 @@ export function AssumptionForm({
                         <Select
                             value={formData.business_group_id?.toString() || ''}
                             onValueChange={(value) =>
-                                handleChange('business_group_id', parseInt(value))
+                                handleChange(
+                                    'business_group_id',
+                                    parseInt(value),
+                                )
                             }
                             disabled={!!assumption}
                         >
@@ -335,7 +361,9 @@ export function AssumptionForm({
             {/* Growth and Rates */}
             <div className="space-y-4">
                 <div className="space-y-2">
-                    <h3 className="text-lg font-medium">Tasas de Crecimiento</h3>
+                    <h3 className="text-lg font-medium">
+                        Tasas de Crecimiento
+                    </h3>
                     <p className="text-sm text-muted-foreground">
                         Define las tasas que se aplicarán en las proyecciones.
                     </p>
@@ -343,7 +371,9 @@ export function AssumptionForm({
 
                 <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                        <Label htmlFor="growth_rate">Tasa de Crecimiento (%)</Label>
+                        <Label htmlFor="growth_rate">
+                            Tasa de Crecimiento (%)
+                        </Label>
                         <Input
                             id="growth_rate"
                             type="number"
@@ -354,7 +384,9 @@ export function AssumptionForm({
                             onChange={(e) =>
                                 handleChange(
                                     'growth_rate',
-                                    e.target.value ? parseFloat(e.target.value) : undefined,
+                                    e.target.value
+                                        ? parseFloat(e.target.value)
+                                        : undefined,
                                 )
                             }
                             placeholder="Ej: 5.5"
@@ -370,7 +402,9 @@ export function AssumptionForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="inflation_rate">Tasa de Inflación (%)</Label>
+                        <Label htmlFor="inflation_rate">
+                            Tasa de Inflación (%)
+                        </Label>
                         <Input
                             id="inflation_rate"
                             type="number"
@@ -381,7 +415,9 @@ export function AssumptionForm({
                             onChange={(e) =>
                                 handleChange(
                                     'inflation_rate',
-                                    e.target.value ? parseFloat(e.target.value) : undefined,
+                                    e.target.value
+                                        ? parseFloat(e.target.value)
+                                        : undefined,
                                 )
                             }
                             placeholder="Usar tasa global"
@@ -392,7 +428,8 @@ export function AssumptionForm({
                             </p>
                         )}
                         <p className="text-xs text-muted-foreground">
-                            Dejar vacío para usar la tasa de inflación global del año.
+                            Dejar vacío para usar la tasa de inflación global
+                            del año.
                         </p>
                     </div>
                 </div>
@@ -427,16 +464,27 @@ export function AssumptionForm({
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value={ADJUSTMENT_TYPE.PERCENTAGE}>
-                                    {ADJUSTMENT_TYPE_LABELS[ADJUSTMENT_TYPE.PERCENTAGE]}
+                                    {
+                                        ADJUSTMENT_TYPE_LABELS[
+                                            ADJUSTMENT_TYPE.PERCENTAGE
+                                        ]
+                                    }
                                 </SelectItem>
-                                <SelectItem value={ADJUSTMENT_TYPE.FIXED_AMOUNT}>
-                                    {ADJUSTMENT_TYPE_LABELS[ADJUSTMENT_TYPE.FIXED_AMOUNT]}
+                                <SelectItem
+                                    value={ADJUSTMENT_TYPE.FIXED_AMOUNT}
+                                >
+                                    {
+                                        ADJUSTMENT_TYPE_LABELS[
+                                            ADJUSTMENT_TYPE.FIXED_AMOUNT
+                                        ]
+                                    }
                                 </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
-                    {formData.adjustment_type === ADJUSTMENT_TYPE.FIXED_AMOUNT && (
+                    {formData.adjustment_type ===
+                        ADJUSTMENT_TYPE.FIXED_AMOUNT && (
                         <div className="space-y-2">
                             <Label htmlFor="fixed_amount">
                                 Monto Fijo{' '}

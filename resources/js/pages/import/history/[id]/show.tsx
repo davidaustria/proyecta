@@ -1,23 +1,23 @@
-import { Head, router } from '@inertiajs/react';
-import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
-import { PageHeader } from '@/components/ui/page-header';
-import { DataTable } from '@/components/ui/data-table';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { DataTable } from '@/components/ui/data-table';
+import { PageHeader } from '@/components/ui/page-header';
+import { useToast } from '@/hooks/use-toast';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
+import { formatCurrency, formatDateTime } from '@/lib/formatters';
+import type { ImportBatch, Invoice, PaginatedData } from '@/types';
+import { Head, router } from '@inertiajs/react';
 import {
     ArrowLeft,
+    Calendar,
+    CheckCircle2,
+    Clock,
     Download,
     FileText,
-    CheckCircle2,
-    XCircle,
-    Clock,
     User,
-    Calendar,
+    XCircle,
 } from 'lucide-react';
-import type { ImportBatch, Invoice, PaginatedData } from '@/types';
-import { formatDateTime, formatCurrency } from '@/lib/formatters';
-import { useToast } from '@/hooks/use-toast';
 
 interface Props {
     batch: ImportBatch;
@@ -80,9 +80,7 @@ export default function ImportDetail({ batch, invoices }: Props) {
 
     const successRate =
         batch.total_records > 0
-            ? Math.round(
-                  (batch.successful_records / batch.total_records) * 100,
-              )
+            ? Math.round((batch.successful_records / batch.total_records) * 100)
             : 0;
 
     const columns = [
@@ -311,10 +309,13 @@ export default function ImportDetail({ batch, invoices }: Props) {
                                 pageSize: invoices.per_page,
                                 total: invoices.total,
                                 onPageChange: (page) => {
-                                    router.visit(`/import/history/${batch.id}?page=${page}`, {
-                                        preserveState: true,
-                                        preserveScroll: true,
-                                    });
+                                    router.visit(
+                                        `/import/history/${batch.id}?page=${page}`,
+                                        {
+                                            preserveState: true,
+                                            preserveScroll: true,
+                                        },
+                                    );
                                 },
                             }}
                         />

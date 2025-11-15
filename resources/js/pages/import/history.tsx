@@ -1,11 +1,8 @@
-import { Head, router } from '@inertiajs/react';
-import { useState } from 'react';
-import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
-import { PageHeader } from '@/components/ui/page-header';
-import { DataTable } from '@/components/ui/data-table';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { DataTable } from '@/components/ui/data-table';
 import { Input } from '@/components/ui/input';
+import { PageHeader } from '@/components/ui/page-header';
 import {
     Select,
     SelectContent,
@@ -13,12 +10,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Upload, FileText, Download, Search, RefreshCw } from 'lucide-react';
-import type { ImportBatch, PaginatedData } from '@/types';
-import { formatDateTime } from '@/lib/formatters';
 import { useConfirm } from '@/hooks/use-confirm';
 import { useToast } from '@/hooks/use-toast';
-import axios from 'axios';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
+import { formatDateTime } from '@/lib/formatters';
+import type { ImportBatch, PaginatedData } from '@/types';
+import { Head, router } from '@inertiajs/react';
+import { Download, FileText, RefreshCw, Search, Upload } from 'lucide-react';
+import { useState } from 'react';
 
 interface Props {
     batches: PaginatedData<ImportBatch>;
@@ -212,7 +211,9 @@ export default function ImportHistory({ batches, filters }: Props) {
                     title="Historial de Importaciones"
                     subtitle="Consulta todas tus importaciones de facturas"
                     actions={
-                        <Button onClick={() => router.visit('/import/invoices')}>
+                        <Button
+                            onClick={() => router.visit('/import/invoices')}
+                        >
                             <Upload className="mr-2 h-4 w-4" />
                             Nueva Importación
                         </Button>
@@ -237,8 +238,12 @@ export default function ImportHistory({ batches, filters }: Props) {
                             <SelectValue placeholder="Estado" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Todos los estados</SelectItem>
-                            <SelectItem value="completed">Completado</SelectItem>
+                            <SelectItem value="all">
+                                Todos los estados
+                            </SelectItem>
+                            <SelectItem value="completed">
+                                Completado
+                            </SelectItem>
                             <SelectItem value="failed">Fallido</SelectItem>
                             <SelectItem value="processing">
                                 Procesando

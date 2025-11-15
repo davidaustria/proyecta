@@ -1,15 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatDateTime } from '@/lib/formatters';
+import type { ImportBatch } from '@/types';
 import {
-    CheckCircle2,
-    XCircle,
     AlertTriangle,
+    CheckCircle2,
     Download,
     FileText,
+    XCircle,
 } from 'lucide-react';
-import type { ImportBatch } from '@/types';
-import { formatDateTime } from '@/lib/formatters';
 
 interface ImportResultsProps {
     batch: ImportBatch;
@@ -155,10 +155,11 @@ export function ImportResults({
                                             {error}
                                         </p>
                                     ))}
-                                {batch.error_log.split('\n').filter(
-                                    (line) => line.trim(),
-                                ).length > 10 && (
-                                    <p className="text-xs italic text-muted-foreground">
+                                {batch.error_log
+                                    .split('\n')
+                                    .filter((line) => line.trim()).length >
+                                    10 && (
+                                    <p className="text-xs text-muted-foreground italic">
                                         ... y más errores. Descarga el log
                                         completo para ver todos.
                                     </p>

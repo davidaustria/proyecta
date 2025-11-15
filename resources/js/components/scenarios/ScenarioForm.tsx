@@ -55,11 +55,14 @@ export function ScenarioForm({
         name: scenario?.name || '',
         description: scenario?.description || '',
         base_year: scenario?.base_year || currentYear,
-        historical_months: scenario?.historical_months || DEFAULT_HISTORICAL_MONTHS,
-        projection_years: scenario?.projection_years || DEFAULT_PROJECTION_YEARS,
+        historical_months:
+            scenario?.historical_months || DEFAULT_HISTORICAL_MONTHS,
+        projection_years:
+            scenario?.projection_years || DEFAULT_PROJECTION_YEARS,
         status: scenario?.status || SCENARIO_STATUS.DRAFT,
         is_baseline: scenario?.is_baseline || false,
-        calculation_method: scenario?.calculation_method || CALCULATION_METHOD.SIMPLE_AVERAGE,
+        calculation_method:
+            scenario?.calculation_method || CALCULATION_METHOD.SIMPLE_AVERAGE,
         include_inflation: scenario?.include_inflation ?? true,
     });
 
@@ -102,7 +105,9 @@ export function ScenarioForm({
                         required
                     />
                     {errors.name && (
-                        <p className="text-sm text-destructive">{errors.name}</p>
+                        <p className="text-sm text-destructive">
+                            {errors.name}
+                        </p>
                     )}
                 </div>
 
@@ -240,19 +245,23 @@ export function ScenarioForm({
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value={CALCULATION_METHOD.SIMPLE_AVERAGE}>
+                            <SelectItem
+                                value={CALCULATION_METHOD.SIMPLE_AVERAGE}
+                            >
                                 <div className="flex flex-col gap-1">
                                     <span>
                                         {
                                             CALCULATION_METHOD_LABELS[
-                                                CALCULATION_METHOD.SIMPLE_AVERAGE
+                                                CALCULATION_METHOD
+                                                    .SIMPLE_AVERAGE
                                             ]
                                         }
                                     </span>
                                     <span className="text-xs text-muted-foreground">
                                         {
                                             CALCULATION_METHOD_DESCRIPTIONS[
-                                                CALCULATION_METHOD.SIMPLE_AVERAGE
+                                                CALCULATION_METHOD
+                                                    .SIMPLE_AVERAGE
                                             ]
                                         }
                                     </span>
@@ -265,14 +274,16 @@ export function ScenarioForm({
                                     <span>
                                         {
                                             CALCULATION_METHOD_LABELS[
-                                                CALCULATION_METHOD.WEIGHTED_AVERAGE
+                                                CALCULATION_METHOD
+                                                    .WEIGHTED_AVERAGE
                                             ]
                                         }
                                     </span>
                                     <span className="text-xs text-muted-foreground">
                                         {
                                             CALCULATION_METHOD_DESCRIPTIONS[
-                                                CALCULATION_METHOD.WEIGHTED_AVERAGE
+                                                CALCULATION_METHOD
+                                                    .WEIGHTED_AVERAGE
                                             ]
                                         }
                                     </span>
@@ -355,12 +366,18 @@ export function ScenarioForm({
                                 {SCENARIO_STATUS_LABELS[SCENARIO_STATUS.ACTIVE]}
                             </SelectItem>
                             <SelectItem value={SCENARIO_STATUS.ARCHIVED}>
-                                {SCENARIO_STATUS_LABELS[SCENARIO_STATUS.ARCHIVED]}
+                                {
+                                    SCENARIO_STATUS_LABELS[
+                                        SCENARIO_STATUS.ARCHIVED
+                                    ]
+                                }
                             </SelectItem>
                         </SelectContent>
                     </Select>
                     {errors.status && (
-                        <p className="text-sm text-destructive">{errors.status}</p>
+                        <p className="text-sm text-destructive">
+                            {errors.status}
+                        </p>
                     )}
                 </div>
 

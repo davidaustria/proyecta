@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import {
@@ -7,7 +8,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import type { ColumnMapping } from '@/types';
 
 interface ColumnMapperProps {
@@ -101,9 +101,7 @@ export function ColumnMapper({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-lg">
-                        Mapeo de Columnas
-                    </CardTitle>
+                    <CardTitle className="text-lg">Mapeo de Columnas</CardTitle>
                     <p className="text-sm text-muted-foreground">
                         Relaciona las columnas de tu archivo Excel con los
                         campos del sistema
@@ -197,9 +195,7 @@ export function ColumnMapper({
                         <span className="text-destructive">*</span> son
                         obligatorios
                     </li>
-                    <li>
-                        • Cada campo del sistema solo puede usarse una vez
-                    </li>
+                    <li>• Cada campo del sistema solo puede usarse una vez</li>
                     <li>
                         • Las columnas sin mapear serán ignoradas durante la
                         importación

@@ -1,28 +1,27 @@
-import { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
-import { PageHeader } from '@/components/ui/page-header';
-import { FileUploader } from '@/components/import/FileUploader';
 import {
     ColumnMapper,
     type SystemField,
 } from '@/components/import/ColumnMapper';
+import { FileUploader } from '@/components/import/FileUploader';
 import { ImportProgress } from '@/components/import/ImportProgress';
 import { ImportResults } from '@/components/import/ImportResults';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
+import AppSidebarLayout from '@/layouts/app/app-sidebar-layout';
+import { cn } from '@/lib/utils';
 import type {
     ColumnMapping,
     ImportBatch,
     ImportPreviewData,
     ImportPreviewRow,
 } from '@/types';
-import { cn } from '@/lib/utils';
-import { formatCurrency, formatDate } from '@/lib/formatters';
+import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
+import { CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 
 const SYSTEM_FIELDS: SystemField[] = [
     {
@@ -261,8 +260,7 @@ export default function InvoicesImport() {
             const mappedFields = new Set(mappings.map((m) => m.system_field));
             return requiredFields.every((f) => mappedFields.has(f));
         }
-        if (currentStep === 3)
-            return previewData && previewData.valid_rows > 0;
+        if (currentStep === 3) return previewData && previewData.valid_rows > 0;
         return true;
     };
 
@@ -281,7 +279,10 @@ export default function InvoicesImport() {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             {STEPS.map((step, index) => (
-                                <div key={step.id} className="flex items-center">
+                                <div
+                                    key={step.id}
+                                    className="flex items-center"
+                                >
                                     <div className="flex flex-col items-center">
                                         <div
                                             className={cn(
@@ -365,7 +366,9 @@ export default function InvoicesImport() {
                         <ImportResults
                             batch={importBatch}
                             onViewDetails={() =>
-                                router.visit(`/import/history/${importBatch.id}`)
+                                router.visit(
+                                    `/import/history/${importBatch.id}`,
+                                )
                             }
                             onStartNew={handleStartNew}
                         />
@@ -399,11 +402,7 @@ export default function InvoicesImport() {
     );
 }
 
-function PreviewTable({
-    previewData,
-}: {
-    previewData: ImportPreviewData;
-}) {
+function PreviewTable({ previewData }: { previewData: ImportPreviewData }) {
     return (
         <Card>
             <CardContent className="p-6">

@@ -21,9 +21,12 @@ export default function EditScenario({ scenario }: Props) {
 
         router.put(`/api/v1/scenarios/${scenario.id}`, data, {
             onSuccess: () => {
-                toast.success('El escenario ha sido actualizado exitosamente.', {
-                    title: 'Escenario actualizado',
-                });
+                toast.success(
+                    'El escenario ha sido actualizado exitosamente.',
+                    {
+                        title: 'Escenario actualizado',
+                    },
+                );
                 router.visit('/scenarios');
             },
             onError: (errors) => {

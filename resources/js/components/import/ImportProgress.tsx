@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 
 interface ImportProgressProps {
     status: 'idle' | 'processing' | 'completed' | 'failed';

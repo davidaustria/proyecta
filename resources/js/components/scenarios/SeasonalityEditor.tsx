@@ -39,14 +39,13 @@ export function SeasonalityEditor({
         if (preset === 'high_season') {
             // Mayor actividad en Nov-Dic (Q4)
             customFactors = [
-                0.9, 0.9, 0.95, 0.95, 1.0, 1.0,
-                1.05, 1.05, 1.1, 1.1, 1.15, 1.2,
+                0.9, 0.9, 0.95, 0.95, 1.0, 1.0, 1.05, 1.05, 1.1, 1.1, 1.15, 1.2,
             ];
         } else {
             // Mayor actividad en Ene-Mar (Q1)
             customFactors = [
-                1.2, 1.15, 1.1, 1.05, 1.0, 0.95,
-                0.95, 0.9, 0.9, 0.95, 1.0, 1.05,
+                1.2, 1.15, 1.1, 1.05, 1.0, 0.95, 0.95, 0.9, 0.9, 0.95, 1.0,
+                1.05,
             ];
         }
 
@@ -112,7 +111,9 @@ export function SeasonalityEditor({
                             min="0"
                             max="10"
                             value={factor.toFixed(2)}
-                            onChange={(e) => handleChange(index, e.target.value)}
+                            onChange={(e) =>
+                                handleChange(index, e.target.value)
+                            }
                             disabled={disabled}
                             className="text-center"
                         />

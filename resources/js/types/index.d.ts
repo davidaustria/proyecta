@@ -138,7 +138,12 @@ export interface ScenarioAssumption {
     customer_type?: CustomerType;
     customer?: Customer;
     product?: Product;
-    hierarchy_level: 'global' | 'customer_type' | 'business_group' | 'customer' | 'product';
+    hierarchy_level:
+        | 'global'
+        | 'customer_type'
+        | 'business_group'
+        | 'customer'
+        | 'product';
 }
 
 // Invoice and Import

@@ -52,11 +52,7 @@ interface Props {
     };
 }
 
-export default function ScenariosIndex({
-    scenarios,
-    users,
-    filters,
-}: Props) {
+export default function ScenariosIndex({ scenarios, users, filters }: Props) {
     const [search, setSearch] = useState(filters.search || '');
     const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
     const [baselineFilter, setBaselineFilter] = useState(
@@ -74,8 +70,7 @@ export default function ScenariosIndex({
             {
                 search: search || undefined,
                 status: statusFilter !== 'all' ? statusFilter : undefined,
-                baseline:
-                    baselineFilter !== 'all' ? baselineFilter : undefined,
+                baseline: baselineFilter !== 'all' ? baselineFilter : undefined,
                 user: userFilter !== 'all' ? userFilter : undefined,
             },
             {
@@ -114,9 +109,12 @@ export default function ScenariosIndex({
                         );
                     },
                     onError: () => {
-                        toast.error('No se pudieron calcular las proyecciones.', {
-                            title: 'Error',
-                        });
+                        toast.error(
+                            'No se pudieron calcular las proyecciones.',
+                            {
+                                title: 'Error',
+                            },
+                        );
                     },
                 },
             );
@@ -254,7 +252,9 @@ export default function ScenariosIndex({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                            <Link href={`/scenarios/${scenario.id}/assumptions`}>
+                            <Link
+                                href={`/scenarios/${scenario.id}/assumptions`}
+                            >
                                 <Settings className="mr-2 h-4 w-4" />
                                 Gestionar supuestos
                             </Link>
@@ -279,7 +279,9 @@ export default function ScenariosIndex({
                             Calcular proyecciones
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <Link href={`/scenarios/compare?ids=${scenario.id}`}>
+                            <Link
+                                href={`/scenarios/compare?ids=${scenario.id}`}
+                            >
                                 <GitCompare className="mr-2 h-4 w-4" />
                                 Comparar con otros
                             </Link>
@@ -346,7 +348,9 @@ export default function ScenariosIndex({
                             <SelectValue placeholder="Estado" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Todos los estados</SelectItem>
+                            <SelectItem value="all">
+                                Todos los estados
+                            </SelectItem>
                             <SelectItem value="draft">Borrador</SelectItem>
                             <SelectItem value="active">Activo</SelectItem>
                             <SelectItem value="archived">Archivado</SelectItem>
@@ -363,9 +367,7 @@ export default function ScenariosIndex({
                         <SelectContent>
                             <SelectItem value="all">Todos</SelectItem>
                             <SelectItem value="1">Solo línea base</SelectItem>
-                            <SelectItem value="0">
-                                Solo alternativas
-                            </SelectItem>
+                            <SelectItem value="0">Solo alternativas</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -374,7 +376,9 @@ export default function ScenariosIndex({
                             <SelectValue placeholder="Usuario" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Todos los usuarios</SelectItem>
+                            <SelectItem value="all">
+                                Todos los usuarios
+                            </SelectItem>
                             {users.map((user) => (
                                 <SelectItem
                                     key={user.id}
