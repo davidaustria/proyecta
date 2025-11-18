@@ -195,7 +195,8 @@ export default function Dashboard({
                                 params={{
                                     year: filters.years?.[0],
                                     customer_type_id: filters.customer_type_id,
-                                    business_group_id: filters.business_group_id,
+                                    business_group_id:
+                                        filters.business_group_id,
                                 }}
                                 filename={`dashboard_${scenario.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`}
                             />

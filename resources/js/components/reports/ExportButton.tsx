@@ -65,14 +65,13 @@ export function ExportButton({
         try {
             const config = {
                 responseType: 'blob' as const,
-                ...(method === 'GET'
-                    ? { params }
-                    : {}),
+                ...(method === 'GET' ? { params } : {}),
             };
 
-            const response = method === 'GET'
-                ? await axios.get(endpoint, config)
-                : await axios.post(endpoint, params, config);
+            const response =
+                method === 'GET'
+                    ? await axios.get(endpoint, config)
+                    : await axios.post(endpoint, params, config);
 
             // Create a download link
             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -84,7 +83,9 @@ export function ExportButton({
             let downloadFilename = filename;
 
             if (!downloadFilename && contentDisposition) {
-                const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                const filenameMatch = contentDisposition.match(
+                    /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
+                );
                 if (filenameMatch && filenameMatch[1]) {
                     downloadFilename = filenameMatch[1].replace(/['"]/g, '');
                 }
@@ -102,13 +103,15 @@ export function ExportButton({
         } catch (error) {
             console.error('Error exporting:', error);
 
-            let errorMessage = 'No se pudo exportar el archivo. Por favor, intenta de nuevo.';
+            let errorMessage =
+                'No se pudo exportar el archivo. Por favor, intenta de nuevo.';
 
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 404) {
                     errorMessage = 'No se encontraron datos para exportar.';
                 } else if (error.response?.status === 422) {
-                    errorMessage = 'Los parámetros de exportación no son válidos.';
+                    errorMessage =
+                        'Los parámetros de exportación no son válidos.';
                 } else if (error.response?.status === 500) {
                     errorMessage = 'Error del servidor al generar el reporte.';
                 }

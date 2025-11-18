@@ -9,11 +9,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import {
-    INVOICE_STATUS,
-    INVOICE_STATUS_COLORS,
-    INVOICE_STATUS_LABELS,
-} from '@/lib/constants';
+import { INVOICE_STATUS_COLORS, INVOICE_STATUS_LABELS } from '@/lib/constants';
 import { formatCurrency, formatDate } from '@/lib/formatters';
 import {
     type BreadcrumbItem,
@@ -111,16 +107,20 @@ export default function InvoicesIndex({
             render: (invoice: Invoice) => {
                 const colorVariant = INVOICE_STATUS_COLORS[invoice.status];
                 const colorClasses: Record<string, string> = {
-                    default: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-                    secondary: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
-                    destructive: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                    default:
+                        'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                    secondary:
+                        'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
+                    destructive:
+                        'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
                     outline: 'border bg-background text-foreground',
                 };
 
                 return (
                     <span
                         className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-                            colorClasses[colorVariant] || 'bg-gray-100 text-gray-800'
+                            colorClasses[colorVariant] ||
+                            'bg-gray-100 text-gray-800'
                         }`}
                     >
                         {INVOICE_STATUS_LABELS[invoice.status]}
@@ -241,7 +241,8 @@ export default function InvoicesIndex({
                     emptyState={{
                         icon: FileText,
                         title: 'No hay facturas',
-                        description: 'No se encontraron facturas con los filtros seleccionados.',
+                        description:
+                            'No se encontraron facturas con los filtros seleccionados.',
                     }}
                 />
             </div>
