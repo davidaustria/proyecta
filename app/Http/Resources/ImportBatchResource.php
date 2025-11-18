@@ -16,6 +16,7 @@ class ImportBatchResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'filename' => $this->filename,
             'source_system' => $this->source_system,
             'import_type' => $this->import_type,

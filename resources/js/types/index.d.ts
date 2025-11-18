@@ -190,15 +190,18 @@ export interface Invoice {
 
 export interface ImportBatch {
     id: number;
+    user_id: number;
     filename: string;
-    source_system?: string;
+    source_system: string;
+    import_type: 'invoices' | 'customers' | 'products';
     total_records: number;
     successful_records: number;
     failed_records: number;
     status: 'pending' | 'processing' | 'completed' | 'failed';
-    error_log?: string;
-    imported_by: number;
-    imported_at: string;
+    started_at: string | null;
+    completed_at: string | null;
+    error_log?: Record<string, any>;
+    metadata?: Record<string, any>;
     created_at: string;
     updated_at: string;
     user?: User;

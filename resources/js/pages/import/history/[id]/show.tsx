@@ -34,7 +34,8 @@ export default function ImportDetail({ batch, invoices }: Props) {
         }
 
         try {
-            const blob = new Blob([batch.error_log], { type: 'text/plain' });
+            const errorText = JSON.stringify(batch.error_log, null, 2);
+            const blob = new Blob([errorText], { type: 'text/plain' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -250,7 +251,7 @@ export default function ImportDetail({ batch, invoices }: Props) {
                                 </dt>
                                 <dd className="mt-1 flex items-center gap-2 text-sm">
                                     <Calendar className="h-4 w-4" />
-                                    {formatDateTime(batch.imported_at)}
+                                    {formatDateTime(batch.created_at)}
                                 </dd>
                             </div>
                             {batch.source_system && (
@@ -285,7 +286,7 @@ export default function ImportDetail({ batch, invoices }: Props) {
                         <CardContent>
                             <div className="max-h-64 overflow-y-auto rounded-lg bg-muted p-4 font-mono text-xs">
                                 <pre className="whitespace-pre-wrap text-destructive">
-                                    {batch.error_log}
+                                    {JSON.stringify(batch.error_log, null, 2)}
                                 </pre>
                             </div>
                         </CardContent>

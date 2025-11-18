@@ -63,7 +63,8 @@ export default function ImportHistory({ batches, filters }: Props) {
         }
 
         try {
-            const blob = new Blob([batch.error_log], { type: 'text/plain' });
+            const errorText = JSON.stringify(batch.error_log, null, 2);
+            const blob = new Blob([errorText], { type: 'text/plain' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -116,10 +117,10 @@ export default function ImportHistory({ batches, filters }: Props) {
             ),
         },
         {
-            key: 'imported_at',
+            key: 'created_at',
             label: 'Fecha de Importación',
             sortable: true,
-            render: (batch: ImportBatch) => formatDateTime(batch.imported_at),
+            render: (batch: ImportBatch) => formatDateTime(batch.created_at),
         },
         {
             key: 'status',

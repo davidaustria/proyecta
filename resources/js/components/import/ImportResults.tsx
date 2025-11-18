@@ -108,7 +108,7 @@ export function ImportResults({
                                 Fecha de importación:
                             </dt>
                             <dd className="font-medium">
-                                {formatDateTime(batch.imported_at)}
+                                {formatDateTime(batch.created_at)}
                             </dd>
                             {batch.source_system && (
                                 <>
@@ -143,27 +143,9 @@ export function ImportResults({
                                 Errores encontrados
                             </h4>
                             <div className="max-h-48 space-y-1 overflow-y-auto rounded-lg border bg-muted/50 p-4">
-                                {batch.error_log
-                                    .split('\n')
-                                    .filter((line) => line.trim())
-                                    .slice(0, 10)
-                                    .map((error, index) => (
-                                        <p
-                                            key={index}
-                                            className="text-xs text-destructive"
-                                        >
-                                            {error}
-                                        </p>
-                                    ))}
-                                {batch.error_log
-                                    .split('\n')
-                                    .filter((line) => line.trim()).length >
-                                    10 && (
-                                    <p className="text-xs text-muted-foreground italic">
-                                        ... y más errores. Descarga el log
-                                        completo para ver todos.
-                                    </p>
-                                )}
+                                <pre className="text-xs whitespace-pre-wrap text-destructive">
+                                    {JSON.stringify(batch.error_log, null, 2)}
+                                </pre>
                             </div>
                         </div>
                     )}

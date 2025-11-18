@@ -326,7 +326,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('import/history', function () {
         $query = \App\Models\ImportBatch::query()
             ->with('user')
-            ->orderBy('imported_at', 'desc');
+            ->orderBy('created_at', 'desc');
 
         // Search filter
         if (request('search')) {
@@ -339,8 +339,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             $query->where('status', request('status'));
         }
 
+        $batches = $query->paginate(15);
+
         return Inertia::render('import/history', [
-            'batches' => $query->paginate(15),
+            'batches' => \App\Http\Resources\ImportBatchResource::collection($batches),
             'filters' => [
                 'search' => request('search'),
                 'status' => request('status'),
@@ -356,7 +358,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->paginate(20);
 
         return Inertia::render('import/history/[id]/show', [
-            'batch' => $batch->load('user'),
+            'batch' => new \App\Http\Resources\ImportBatchResource($batch->load('user')),
             'invoices' => $invoices,
         ]);
     })->name('import.history.show');
