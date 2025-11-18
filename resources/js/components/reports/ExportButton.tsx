@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { Download, Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -57,7 +57,7 @@ export function ExportButton({
     className,
 }: ExportButtonProps) {
     const [isExporting, setIsExporting] = useState(false);
-    const { toast } = useToast();
+    const { success, error: showError } = useToast();
 
     const handleExport = async () => {
         setIsExporting(true);
@@ -96,10 +96,8 @@ export function ExportButton({
             link.remove();
             window.URL.revokeObjectURL(url);
 
-            toast({
+            success('El archivo se ha descargado correctamente.', {
                 title: 'Exportación exitosa',
-                description: 'El archivo se ha descargado correctamente.',
-                variant: 'default',
             });
         } catch (error) {
             console.error('Error exporting:', error);
@@ -116,10 +114,8 @@ export function ExportButton({
                 }
             }
 
-            toast({
+            showError(errorMessage, {
                 title: 'Error al exportar',
-                description: errorMessage,
-                variant: 'destructive',
             });
         } finally {
             setIsExporting(false);

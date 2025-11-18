@@ -9,7 +9,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { INVOICE_STATUS } from '@/lib/constants';
+import {
+    INVOICE_STATUS,
+    INVOICE_STATUS_COLORS,
+    INVOICE_STATUS_LABELS,
+} from '@/lib/constants';
 import { formatCurrency, formatDate } from '@/lib/formatters';
 import {
     type BreadcrumbItem,
@@ -54,7 +58,7 @@ export default function InvoicesIndex({
     );
 
     const handleFilterChange = () => {
-        const params: Record<string, unknown> = {};
+        const params: Record<string, string | number> = {};
 
         if (search) params.search = search;
         if (selectedCustomer !== 'all')
@@ -62,7 +66,7 @@ export default function InvoicesIndex({
         if (selectedStatus !== 'all') params.status = selectedStatus;
 
         router.visit('/invoices', {
-            data: params,
+            data: params as any,
             preserveState: true,
         });
     };
@@ -88,7 +92,7 @@ export default function InvoicesIndex({
         {
             key: 'customer',
             label: 'Cliente',
-            render: (invoice: Invoice) => invoice.customer.name,
+            render: (invoice: Invoice) => invoice.customer?.name ?? 'N/A',
         },
         {
             key: 'invoice_date',
@@ -104,21 +108,25 @@ export default function InvoicesIndex({
         {
             key: 'status',
             label: 'Estado',
-            render: (invoice: Invoice) => (
-                <span
-                    className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-                        INVOICE_STATUS.colors[
-                            invoice.status as keyof typeof INVOICE_STATUS.colors
-                        ] || 'bg-gray-100 text-gray-800'
-                    }`}
-                >
-                    {
-                        INVOICE_STATUS.labels[
-                            invoice.status as keyof typeof INVOICE_STATUS.labels
-                        ]
-                    }
-                </span>
-            ),
+            render: (invoice: Invoice) => {
+                const colorVariant = INVOICE_STATUS_COLORS[invoice.status];
+                const colorClasses: Record<string, string> = {
+                    default: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                    secondary: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
+                    destructive: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                    outline: 'border bg-background text-foreground',
+                };
+
+                return (
+                    <span
+                        className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
+                            colorClasses[colorVariant] || 'bg-gray-100 text-gray-800'
+                        }`}
+                    >
+                        {INVOICE_STATUS_LABELS[invoice.status]}
+                    </span>
+                );
+            },
         },
     ];
 
@@ -199,7 +207,7 @@ export default function InvoicesIndex({
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">Todos</SelectItem>
-                                {Object.entries(INVOICE_STATUS.labels).map(
+                                {Object.entries(INVOICE_STATUS_LABELS).map(
                                     ([value, label]) => (
                                         <SelectItem key={value} value={value}>
                                             {label}

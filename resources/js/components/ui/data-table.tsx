@@ -45,6 +45,11 @@ export interface DataTableProps<T> {
   isLoading?: boolean
   isEmpty?: boolean
   emptyMessage?: string
+  emptyState?: {
+    icon?: React.ComponentType<any>
+    title?: string
+    description?: string
+  }
   className?: string
   pagination?: {
     currentPage: number
@@ -66,6 +71,7 @@ function DataTable<T extends Record<string, any>>({
   isLoading = false,
   isEmpty = false,
   emptyMessage = "No data available",
+  emptyState,
   className,
   pagination,
 }: DataTableProps<T>) {
@@ -107,18 +113,28 @@ function DataTable<T extends Record<string, any>>({
     </>
   )
 
-  const renderEmptyState = () => (
-    <TableRow>
-      <TableCell colSpan={columns.length + (actions ? 1 : 0)}>
-        <EmptyState
-          variant="no-data"
-          title={emptyMessage}
-          description="No records found matching your criteria"
-          className="py-8"
-        />
-      </TableCell>
-    </TableRow>
-  )
+  const renderEmptyState = () => {
+    const Icon = emptyState?.icon;
+    return (
+      <TableRow>
+        <TableCell colSpan={columns.length + (actions ? 1 : 0)}>
+          <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
+            {Icon && <Icon className="size-12 text-muted-foreground" />}
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">
+                {emptyState?.title || emptyMessage}
+              </h3>
+              {emptyState?.description && (
+                <p className="text-sm text-muted-foreground">
+                  {emptyState.description}
+                </p>
+              )}
+            </div>
+          </div>
+        </TableCell>
+      </TableRow>
+    );
+  }
 
   const renderDataRows = () =>
     data.map((row) => (
